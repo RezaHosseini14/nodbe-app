@@ -1,0 +1,53 @@
+a {
+  color: inherit;
+  text-decoration: none !important;
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+
+.fade-animation {
+  animation: fade 0.9s infinite alternate linear;
+}
+
+.loading-container {
+  opacity: 0;
+  transition: 0.2s;
+}
+.loading-container.in {
+  opacity: 1;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-image: url("../img/pattern3.png");
+  background-position: center;
+  background-size: 50%;
+  width: 100%;
+  height: 100%;
+  opacity: 0.2;
+}
+
+/* body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 35rem;
+  background-image: url(/_next/static/media/bg-fade.9f9306fc.svg);
+  z-index: 0;
+  opacity: 0.051;
+  background-size: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+} */

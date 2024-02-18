@@ -1,0 +1,4 @@
+/node_modules
+
+/backend/public/*
+!/backend/public/.gitkeep

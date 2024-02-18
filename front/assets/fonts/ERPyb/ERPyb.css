@@ -1,0 +1,90 @@
+@font-face {
+  font-display: swap;
+  font-family: ERPyb;
+  font-weight: 400;
+  src: url(ERPyb-fn-R.eot);
+  src: url(ERPyb-fn-R.eot?#iefix) format("embedded-opentype"), url(ERPyb-fn-R.woff) format("woff"), url(ERPyb-fn-R.ttf) format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: ERPyb;
+  font-weight: 500;
+  src: url(ERPyb-fn-M.eot);
+  src: url(ERPyb-fn-M.eot?#iefix) format("embedded-opentype"), url(ERPyb-fn-M.woff) format("woff"), url(ERPyb-fn-M.ttf) format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: ERPyb;
+  font-weight: 600;
+  src: url(ERPyb-fn-B.eot);
+  src: url(ERPyb-fn-B.eot?#iefix) format("embedded-opentype"), url(ERPyb-fn-B.woff) format("woff"), url(ERPyb-fn-B.ttf) format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: ERPyb;
+  font-weight: 700;
+  src: url(ERPyb-fn-K.eot);
+  src: url(ERPyb-fn-K.eot?#iefix) format("embedded-opentype"), url(ERPyb-fn-K.woff) format("woff"), url(ERPyb-fn-K.ttf) format("truetype");
+}
+
+@font-face {
+  font-display: swap;
+  font-family: ERPyb;
+  font-weight: 800;
+  src: url(ERPyb-fn-F.eot);
+  src: url(ERPyb-fn-F.eot?#iefix) format("embedded-opentype"), url(ERPyb-fn-F.woff) format("woff"), url(ERPyb-fn-F.ttf) format("truetype");
+}
+
+body {
+  font-family: ERPyb !important;
+  font-weight: 300;
+}
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6,
+input,
+textarea,
+p,
+div,
+a,
+option {
+  font-family: "ERPyb", tahoma !important;
+}
+b,
+bold,
+strong {
+  font-weight: bold !important;
+}
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-weight: bold;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: ERPyb !important;
+}

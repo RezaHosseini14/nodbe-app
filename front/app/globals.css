@@ -1,0 +1,202 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("../assets/fonts/ERPyb/ERPyb.css");
+/* Using a url */
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+} */
+
+.root,
+#root,
+#docs-root {
+  --mianColor: #739072;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit !important;
+}
+
+a:hover {
+  color: inherit !important;
+}
+
+/* body.dark .mainbg::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../assets/img/redbg.avif");
+  background-size: cover;
+  background-position: center;
+  opacity: .4;
+  mix-blend-mode: lighten;
+} */
+
+body.dark {
+  background-color: #111111;
+  background-image: linear-gradient(
+    135deg,
+    hsla(0, 0%, 0%, 0.3) 11%,
+    hsla(0, 100%, 50%, 0.3) 40%,
+    hsla(0, 0%, 0%, 0.3) 66%,
+    hsla(0, 100%, 50%, 0.3) 100%
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    hsla(0, 0%, 0%, 0.3) 11%,
+    hsla(0, 100%, 50%, 0.3) 40%,
+    hsla(0, 0%, 0%, 0.3) 66%,
+    hsla(0, 100%, 50%, 0.3) 100%
+  );
+  background-image: -webkit-linear-gradient(
+    135deg,
+    hsla(0, 0%, 0%, 0.3) 11%,
+    hsla(0, 100%, 50%, 0.3) 40%,
+    hsla(0, 0%, 0%, 0.3) 66%,
+    hsla(0, 100%, 50%, 0.3) 100%
+  );
+}
+
+body {
+  background-color: #ecffe3;
+}
+
+body .main-logo {
+  filter: brightness(0) saturate(100%) invert(23%) sepia(76%) saturate(5835%) hue-rotate(147deg)
+    brightness(92%) contrast(84%);
+}
+
+body.light {
+  background-color: #ecffe3;
+}
+
+body.light .main-logo {
+  filter: brightness(0) saturate(100%) invert(23%) sepia(76%) saturate(5835%) hue-rotate(147deg)
+    brightness(92%) contrast(84%);
+}
+
+.half-circle {
+  width: 170px;
+  height: 70px;
+  border-top-left-radius: 50% 100%;
+  border-top-right-radius: 50% 100%;
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
+  top: -4.4rem;
+}
+/* 
+.header-container::after {
+  content: "";
+  filter: brightness(0) saturate(100%) invert(23%) sepia(76%) saturate(5835%) hue-rotate(147deg)
+    brightness(92%) contrast(84%);
+  background-image: url("../assets//img/emam-zaman290.png");
+  top: -130px;
+  right: 0;
+  width: 100%;
+  height: 40rem;
+  background-position-x: center;
+  position: absolute;
+  background-size: cover;
+  opacity: 0.05;
+} */
+
+:root {
+  --mainColor: #739072;
+  --rs-border-primary: #739072;
+  --rs-input-focus-border: #739072;
+}
+
+.rs-input,
+.rs-picker-select,
+.rs-input-grou {
+  border-color: var(--mainColor) !important;
+}
+
+.rmdp-input {
+  border: 1px solid var(--mainColor) !important;
+  height: 35.6px !important;
+}
+
+.login-bg {
+  background-color: #739072;
+  background-image: linear-gradient(
+    135deg,
+    hsla(0, 0%, 0%, 0.3) 11%,
+    hsla(0, 100%, 50%, 0.3) 40%,
+    hsla(0, 0%, 0%, 0.3) 66%,
+    hsla(0, 100%, 50%, 0.3) 100%
+  );
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--mainColor);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* light scrollbar */
+
+/* Track */
+.light-scroll::-webkit-scrollbar-track {
+  background: var(--mainColor);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Handle */
+.light-scroll::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
