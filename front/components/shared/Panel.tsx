@@ -13,7 +13,7 @@ function Panel({
 }) {
   return (
     <div
-      className={`col-span-${col} row-span-${row} dark:bg-red-500/35 bg-white/70 rounded-xl p-4 shadow-mainShadow`}
+      className={`col-span-${col} row-span-${row} dark:bg-mianColorDarkBox bg-white/70 rounded-xl p-4 shadow-mainShadow`}
     >
       <h1 className="font-bold text-2xl">{title}</h1>
       {children}

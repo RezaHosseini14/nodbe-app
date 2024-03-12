@@ -1,11 +1,26 @@
 import http from "../httpService";
 
-export function allContent() {
-  return http.get("/content/all");
+export function allContent(slug: string, year: number) {
+  const params = new URLSearchParams();
+
+  if (slug) {
+    params.append('slug', slug);
+  }
+
+  if (year) {
+    params.append('year', year.toString());
+  }
+
+  const url = `/content/all${params.toString() ? `?${params.toString()}` : ''}`;
+
+  return http.get(url);
 }
 
+
 export function allContentAdmin(page: number, limit: number) {
-  return http.get(`/content/allcontentadmin${page && `?page=${page}&`}${limit && `limit=${limit}`}`);
+  return http.get(
+    `/content/allcontentadmin${page && `?page=${page}&`}${limit && `limit=${limit}`}`
+  );
 }
 export function contentById(id: string) {
   return http.get(`/content/${id}`);

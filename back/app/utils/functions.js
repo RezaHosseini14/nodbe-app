@@ -41,13 +41,19 @@ function listOfImages(files) {
 }
 
 function getImageUrl(files) {
-  return path.join(files[0].destination, files[0].filename).replace(/\\/g, "/").replace("public/", "");
+  return path
+    .join(files[0].destination, files[0].filename)
+    .replace(/\\/g, "/")
+    .replace("public/", "");
 }
 
-function mamad(files) {
+function mamad(files, fileDetails) {
+  const newFileDetails = JSON.parse(fileDetails);
   if (files?.length > 0) {
-    return files.map((file) => ({
+    return files.map((file, index) => ({
       title: file.filename,
+      audioType: newFileDetails[index].audioType,
+      audioDesc: newFileDetails[index].audioDesc,
       url: path.join(file.destination, file.filename).replace(/\\/g, "/").replace("public/", ""),
     }));
   } else {
@@ -56,7 +62,20 @@ function mamad(files) {
 }
 
 function getShamsiMonthName(miladiMonthNumber) {
-  const shamsiMonths = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
+  const shamsiMonths = [
+    "فروردین",
+    "اردیبهشت",
+    "خرداد",
+    "تیر",
+    "مرداد",
+    "شهریور",
+    "مهر",
+    "آبان",
+    "آذر",
+    "دی",
+    "بهمن",
+    "اسفند",
+  ];
 
   if (miladiMonthNumber >= 1 && miladiMonthNumber <= 12) {
     return shamsiMonths[miladiMonthNumber - 1];

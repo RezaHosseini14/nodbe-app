@@ -5,7 +5,7 @@ import { shamsi } from "@/utils/functions";
 import Loading from "@/components/shared/Loading";
 
 function UserContentChart() {
-  const { data, error, isLoading } = useQuery({ queryKey: ["userconten"], queryFn: contentuser });
+  const { data, isLoading } = useQuery({ queryKey: ["userconten"], queryFn: contentuser });
   return (
     <>
       {isLoading ? (

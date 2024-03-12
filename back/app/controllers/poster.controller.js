@@ -4,7 +4,9 @@ const { getImageUrl } = require("../utils/functions");
 class PosterController {
   async getPoster(req, res, next) {
     try {
+      const currentDate = new Date();
       const poster = await PosterModel.find().sort({ createdAt: "desc" }).limit(1);
+
       if (!poster || poster.length === 0) {
         throw { status: 404, success: false, message: "اطلاعیه یافت نشد" };
       }

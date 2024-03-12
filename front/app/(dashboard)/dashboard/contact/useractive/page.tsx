@@ -1,13 +1,14 @@
 "use client";
-import { Table } from "rsuite";
 import { useQuery } from "react-query";
-import Link from "next/link";
+import { Table } from "rsuite";
+//services
 import { bestUser } from "@/services/contact/contactServices";
+//functions
 import { shamsi } from "@/utils/functions";
-const { Column, HeaderCell, Cell } = Table;
 
+const { Column, HeaderCell, Cell } = Table;
 function UserActivity() {
-  const { data, error, isLoading } = useQuery({ queryFn: bestUser });
+  const { data, isLoading } = useQuery({ queryFn: bestUser });
   return (
     <div>
       <div className="block mb-4 border-b-mianColor">
@@ -25,7 +26,7 @@ function UserActivity() {
       >
         <Column width={70} align="center" fixed>
           <HeaderCell align="center">شناسه</HeaderCell>
-          <Cell align="center">{(rowData, index: any) => <p>{index + 1}</p>}</Cell>
+          <Cell align="center">{(rowData, index: number) => <p>{index + 1}</p>}</Cell>
         </Column>
 
         <Column flexGrow={1}>

@@ -1,37 +1,43 @@
 "use client";
-import { allUser, blockUser, deleteUser } from "@/services/contact/contactServices";
-import { getRoles, shamsi } from "@/utils/functions";
 import React, { useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { Pagination, Table } from "rsuite";
-import { IoCreateOutline, IoTrashOutline } from "react-icons/io5";
-import Link from "next/link";
 import toast from "react-hot-toast";
-import ConfirmModal from "@/components/shared/ConfirmModal";
-const { Column, HeaderCell, Cell } = Table;
+import Link from "next/link";
 
+//icons
+import { IoCreateOutline, IoTrashOutline } from "react-icons/io5";
+
+//components
+import ConfirmModal from "@/components/shared/ConfirmModal";
+import { allUser, blockUser, deleteUser } from "@/services/contact/contactServices";
+
+//functions
+import { getRoles, shamsi } from "@/utils/functions";
+
+const { Column, HeaderCell, Cell } = Table;
 function ContactPage() {
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState<boolean>(false);
   const [rowDataId, setRowDataId] = useState<string>("");
 
-  const handleOpen = (id: string) => {
+  const handleOpen = (id: string): void => {
     setOpen(true);
     setRowDataId(id);
   };
 
-  const handleClose = () => {
+  const handleClose = (): void => {
     setOpen(false);
     setRowDataId("");
   };
 
-  const handleChangeLimit = (dataKey) => {
+  const handleChangeLimit = (dataKey): void => {
     setPage(1);
     setLimit(dataKey);
   };
 
-  const { data, error, isLoading, refetch } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ["allUser", page, limit],
     () => allUser(page, limit),
     {
@@ -39,19 +45,11 @@ function ContactPage() {
     }
   );
 
-  const {
-    data: userDeleteData,
-    error: userDeleteError,
-    isLoading: useDeleteIsLoading,
-    mutateAsync,
-  } = useMutation({ mutationsKey: ["deleteUser"], mutationFn: deleteUser });
+  const { mutateAsync } = useMutation({ mutationFn: deleteUser });
 
-  const {
-    data: dataBlock,
-    error: errorBlock,
-    isLoading: isLoadingBlock,
-    mutateAsync: mutateAsyncBlock,
-  } = useMutation({ mutationsKey: ["Block"], mutationFn: blockUser });
+  const { mutateAsync: mutateAsyncBlock } = useMutation({
+    mutationFn: blockUser,
+  });
 
   const removeUserHandler = async (id: string) => {
     try {
@@ -61,7 +59,7 @@ function ContactPage() {
         toast.success(res?.data?.message);
       }
     } catch (error: any) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "مشکلی پیش آمده");
     }
   };
 

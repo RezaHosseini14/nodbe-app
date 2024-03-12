@@ -1,45 +1,34 @@
+//@ts-nocheck
 "use client";
-import SubmitBtn from "@/components/shared/SubmitBtn";
-import { uploaderStyle } from "@/json/style";
-import { model } from "@/model/poster/createPosterModel";
-import { addPoster } from "@/services/poster/posterServices";
-import { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
-import { Form, DatePicker, Toggle, Uploader, SelectPicker } from "rsuite";
+import { Form, Uploader } from "rsuite";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
+import { uploaderStyle } from "@/json/style";
 
-const Field = forwardRef((props: any, ref: any) => {
-  const { name, message, label, accepter, error, ...rest } = props;
-  return (
-    <Form.Group
-      controlId={`${name}-10`}
-      ref={ref}
-      className={error ? "has-error" : ""}
-      classPrefix="w-full "
-    >
-      <Form.ControlLabel>{label}</Form.ControlLabel>
-      <Form.Control
-        classPrefix="w-full relative"
-        className="w-full"
-        name={name}
-        accepter={accepter}
-        errorMessage={error}
-        {...rest}
-      />
-      <Form.HelpText>{message}</Form.HelpText>
-    </Form.Group>
-  );
-});
+//components
+import SubmitBtn from "@/components/shared/SubmitBtn";
+import Field from "@/components/shared/Field";
+
+//model
+import { model } from "@/model/poster/createPosterModel";
+
+//services
+import { addPoster } from "@/services/poster/posterServices";
 
 function CreatePoster() {
   const { data, error, isLoading, mutateAsync } = useMutation({ mutationFn: addPoster });
 
+  const [createTime, setCreateTime] = useState<string>("");
   const formRef = useRef<any>();
-  const [formError, setFormError] = useState<any>({});
+  const [formError, setFormError] = useState<object>({});
   const [formValue, setFormValue] = useState({
     title: "",
     desc: "",
-    create: new Date(),
+    // create: "",
     image: null,
   });
 
@@ -49,11 +38,12 @@ function CreatePoster() {
     } else {
       try {
         const { title, desc, create, image } = formValue;
+        const createTimeNow = createTime.unix * 1000;
 
         const formData = new FormData();
         formData.append("title", title);
         formData.append("desc", desc);
-        formData.append("create", create);
+        formData.append("create", createTimeNow.toString());
         image.forEach((file: any) => {
           formData.append("image", file.blobFile);
         });
@@ -63,7 +53,9 @@ function CreatePoster() {
           toast.success(res?.data?.message);
         }
       } catch (error: any) {
-        toast.error(error?.response?.data?.message);
+        toast.error(
+          error?.response?.data?.message ? error?.response?.data?.message : "مشکلی پیش آمده"
+        );
       }
     }
   };
@@ -87,18 +79,31 @@ function CreatePoster() {
       <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 text-base font-medium">
         <Field name="title" label="عنوان اطلاعیه" />
         <Field name="desc" label="توضیحات اطلاعیه" />
-        <Field accepter={DatePicker} name="create" label="زمان اطلاعیه" />
+        {/* <Field accepter={DatePicker} name="create" label="زمان اطلاعیه" /> */}
+
+        <div className="flex flex-col">
+          <label htmlFor="create">زمان اطلاعیه</label>
+          <DatePicker
+            style={{ width: "100%" }}
+            name="create"
+            value={createTime}
+            onChange={setCreateTime}
+            calendar={persian}
+            locale={persian_fa}
+          />
+        </div>
 
         <Form.Group className="xl:col-span-3 lg:col-span-3 md:col-span-2 col-span-1">
           <Form.ControlLabel className="text-xl font-bold mb-4">تصویر اطلاعیه</Form.ControlLabel>
 
-          <Uploader autoUpload={false} onChange={handleImageChange} draggable>
+          <Uploader autoUpload={false} onChange={handleImageChange} draggable multiple={false}>
             <div style={uploaderStyle}>
               <span>تصویر مورد نظر را انتخاب کنید</span>
             </div>
           </Uploader>
         </Form.Group>
       </div>
+
       <Form.Group>
         <SubmitBtn submitFn={handleSubmit} label="ذخیره اطلاعیه" />
       </Form.Group>

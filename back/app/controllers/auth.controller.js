@@ -125,7 +125,7 @@ class AuthController {
           httpOnly: true,
           sameSite: "none",
           secure: true,
-          expiresIn: 60 * 1000 * 60 * 24,
+          maxAge: 60 * 1000 * 60 * 24,
         });
 
         return res.status(200).json({ accessToken, userId, username, roles });
@@ -176,8 +176,7 @@ class AuthController {
           httpOnly: true,
           sameSite: "none",
           secure: true,
-          maxAge: 60 * 1000 * 60 * 24 * 1,
-          expiresIn: 60 * 1000 * 60 * 24 * 1,
+          maxAge: 60 * 1000 * 60 * 24,
         });
 
         res.status(200).json({

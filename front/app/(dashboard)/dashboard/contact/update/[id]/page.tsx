@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import SubmitBtn from "@/components/shared/SubmitBtn";
 import { model } from "@/model/user/createUserModel";
@@ -12,14 +13,7 @@ const Field = forwardRef((props: any, ref: any) => {
   return (
     <Form.Group controlId={`${name}-10`} ref={ref} className={error ? "has-error" : ""} classPrefix="w-full ">
       <Form.ControlLabel>{label}</Form.ControlLabel>
-      <Form.Control
-        classPrefix="w-full relative"
-        className="w-full"
-        name={name}
-        accepter={accepter}
-        errorMessage={error}
-        {...rest}
-      />
+      <Form.Control classPrefix="w-full relative" className="w-full" name={name} accepter={accepter} errorMessage={error} {...rest} />
       <Form.HelpText>{message}</Form.HelpText>
     </Form.Group>
   );
@@ -37,12 +31,7 @@ type CreateUserFormValue = {
 
 export default function UpdateContactPage({ params }: { params: { id: string } }) {
   const { data, error, isLoading } = useQuery(["userById", params.id], () => getUser(params.id));
-  const {
-    data: updateUserData,
-    error: updateError,
-    isLoading: updateIsLoading,
-    mutateAsync,
-  } = useMutation({ mutationFn: updateUser });
+  const { data: updateUserData, error: updateError, isLoading: updateIsLoading, mutateAsync } = useMutation({ mutationFn: updateUser });
 
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});

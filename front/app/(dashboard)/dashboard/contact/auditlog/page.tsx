@@ -1,27 +1,63 @@
 "use client";
-import { useQuery } from "react-query";
-import { allAuditLogs } from "@/services/contact/contactServices";
-import { shamsi } from "@/utils/functions";
-import { Pagination, Table } from "rsuite";
 import { useState } from "react";
+import { useQuery } from "react-query";
+import { Pagination, Table } from "rsuite";
+
+//functions
+import { shamsi } from "@/utils/functions";
+
+//services
+import { allAuditLogs } from "@/services/contact/contactServices";
 
 const { Column, HeaderCell, Cell } = Table;
 function AuditLogPage() {
   const [limit, setLimit] = useState<number>(10);
   const [page, setPage] = useState<number>(1);
 
-  const handleChangeLimit = (dataKey: any) => {
+  const handleChangeLimit = (dataKey: number) => {
     setPage(1);
     setLimit(dataKey);
   };
 
-  const { data, error, isLoading, refetch } = useQuery(
-    ["auditLog", page, limit],
-    () => allAuditLogs(page, limit),
-    {
-      keepPreviousData: true,
+  const findMethod = (data: any) => {
+    switch (data) {
+      case "GET":
+        return (
+          <div className="bg-green-100 border border-green-600 text-green-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
+            GET
+          </div>
+        );
+
+      case "POST":
+        return (
+          <div className="bg-red-100 border border-red-600 text-red-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
+            POST
+          </div>
+        );
+
+      case "PUT":
+        return (
+          <div className="bg-orange-100 border border-orange-600 text-orange-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
+            PUT
+          </div>
+        );
+
+      case "DELETE":
+        return (
+          <div className="bg-red-100 border border-red-600 text-red-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
+            DELETE
+          </div>
+        );
+
+      default:
+        return "no method";
     }
-  );
+  };
+
+  const { data, isLoading } = useQuery(["auditLog", page, limit], () => allAuditLogs(page, limit), {
+    keepPreviousData: true,
+  });
+
   return (
     <div>
       <div className="block mb-4">
@@ -40,7 +76,7 @@ function AuditLogPage() {
         <Column width={70} align="center" fixed>
           <HeaderCell align="center">شناسه</HeaderCell>
           <Cell align="center">
-            {(rowData: any, index: any) => <p>{page * limit - limit + index + 1}</p>}
+            {(rowData, index: number) => <p>{page * limit - limit + index + 1}</p>}
           </Cell>
         </Column>
         <Column width={150}>
@@ -58,11 +94,6 @@ function AuditLogPage() {
           <Cell align="center" dataKey="baseUrl" />
         </Column>
 
-        {/* <Column flexGrow={1}>
-          <HeaderCell align="center">pathname</HeaderCell>
-          <Cell align="center" dataKey="pathname" />
-        </Column> */}
-
         <Column flexGrow={1}>
           <HeaderCell align="center">url</HeaderCell>
           <Cell align="center" dataKey="url" />
@@ -70,47 +101,7 @@ function AuditLogPage() {
 
         <Column width={100}>
           <HeaderCell align="center">method</HeaderCell>
-          <Cell align="center">
-            {(rowData: any) => {
-              switch (rowData.method) {
-                case "GET":
-                  return (
-                    <div className="bg-green-100 border border-green-600 text-green-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
-                      GET
-                    </div>
-                  );
-                  break;
-
-                case "POST":
-                  return (
-                    <div className="bg-red-100 border border-red-600 text-red-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
-                      POST
-                    </div>
-                  );
-                  break;
-
-                case "PUT":
-                  return (
-                    <div className="bg-orange-100 border border-orange-600 text-orange-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
-                      PUT
-                    </div>
-                  );
-                  break;
-
-                case "DELETE":
-                  return (
-                    <div className="bg-red-100 border border-red-600 text-red-600 font-medium px-2 py-1 rounded-xl w-24 text-center text-xs">
-                      DELETE
-                    </div>
-                  );
-                  break;
-
-                default:
-                  return "asdg";
-                  break;
-              }
-            }}
-          </Cell>
+          <Cell align="center">{(rowData) => findMethod(rowData.method)}</Cell>
         </Column>
 
         <Column width={80}>

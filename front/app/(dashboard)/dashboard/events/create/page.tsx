@@ -1,35 +1,16 @@
 "use client";
-
-import SubmitBtn from "@/components/shared/SubmitBtn";
-import { model } from "@/model/event/createEventModel";
-import { allEvents, createEvents } from "@/services/events/eventsServices";
-import React, { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
 import { Form, SelectPicker, InputNumber } from "rsuite";
 
-const Field = forwardRef((props: any, ref: any) => {
-  const { name, message, label, accepter, error, ...rest } = props;
-  return (
-    <Form.Group
-      classPrefix="w-full"
-      controlId={`${name}-10`}
-      ref={ref}
-      className={error ? "has-error" : ""}
-    >
-      <Form.ControlLabel>{label} </Form.ControlLabel>
-      <Form.Control
-        className="w-full"
-        classPrefix="w-full"
-        name={name}
-        accepter={accepter}
-        errorMessage={error}
-        {...rest}
-      />
-      <Form.HelpText>{message}</Form.HelpText>
-    </Form.Group>
-  );
-});
+//components
+import SubmitBtn from "@/components/shared/SubmitBtn";
+import { model } from "@/model/event/createEventModel";
+
+//services
+import { allEvents, createEvents } from "@/services/events/eventsServices";
+import Field from "@/components/shared/Field";
 
 type CreateEventFormValue = {
   title: string;
@@ -39,11 +20,7 @@ type CreateEventFormValue = {
 
 function CreateEvent() {
   const { data, error, isLoading, mutateAsync } = useMutation({ mutationFn: createEvents });
-  const {
-    data: eventData,
-    error: eventerror,
-    isLoading: eventLoading,
-  } = useQuery({ queryFn: allEvents });
+  const { data: eventData, isLoading: eventLoading } = useQuery({ queryFn: allEvents });
 
   const formRef = useRef<any>();
   const [formError, setFormError] = useState({});

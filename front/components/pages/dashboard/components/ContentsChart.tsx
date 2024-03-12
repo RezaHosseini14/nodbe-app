@@ -1,13 +1,13 @@
+//@ts-nocheck
+"use client";
 import { useQuery } from "react-query";
 import { contentOfMonth } from "@/services/content/contentServices";
-// import Chart from "react-apexcharts";
-
 import Loading from "@/components/shared/Loading";
 import dynamic from "next/dynamic";
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 function ContentsChart() {
-  const { data, error, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["contentofmonth"],
     queryFn: contentOfMonth,
   });

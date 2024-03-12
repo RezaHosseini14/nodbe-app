@@ -1,29 +1,27 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Form, ButtonToolbar, Schema } from "rsuite";
+import { Form } from "rsuite";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 
+// services
 import { login } from "@/services/auth/authServices";
+
+// components
 import Loading from "@/components/shared/Loading";
+import { model } from "@/model/auth/loginModel";
 
 type FieldType = {
-  username?: string;
-  password?: string;
+  username: string;
+  password: string;
 };
 
 function AuthPage() {
   const router = useRouter();
   const formRef = useRef<any>();
-  const [formValue, setFormValue] = useState<any>({ username: "", password: "" });
-
-  const { data, error, isLoading, mutateAsync } = useMutation({ mutationFn: login });
-
-  const model = Schema.Model({
-    username: Schema.Types.StringType().isRequired("نام کاربری الزامی است"),
-    password: Schema.Types.StringType().isRequired("رمز عبور الزامی است"),
-  });
+  const [formValue, setFormValue] = useState<FieldType>({ username: "", password: "" });
+  const { isLoading, mutateAsync } = useMutation({ mutationFn: login });
 
   const handleSubmit = async () => {
     if (!formRef.current.check()) {
@@ -33,8 +31,7 @@ function AuthPage() {
         const res = await mutateAsync(formValue);
         if (res.status === 200) {
           toast.success("باموفقیت وارد شدید");
-          // router.refresh();
-          router.replace("/dashboard")
+          router.replace("/dashboard");
         }
       } catch (error: any) {
         toast.error(error?.response?.data?.message);
@@ -44,7 +41,7 @@ function AuthPage() {
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-mianColor/50">
-      <div className="relative w-96 h-96 p-8 border border-gray-600 rounded-xl shadow-xl bg-white/50 backdrop-blur-xl">
+      <div className="relative w-96 h-96 p-8 border border-mianColor rounded-xl shadow-xl bg-white/50 backdrop-blur-xl">
         <h1 className="absolute right-1/2 translate-x-1/2 -top-6 text-[2rem] rounded-xl shadow-md bg-mianColor text-white px-9">
           ورود
         </h1>
@@ -57,19 +54,34 @@ function AuthPage() {
             onChange={setFormValue}
             className="flex flex-col justify-between h-full pt-4"
           >
-            <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-2 w-full mt-8">
               <Form.Group>
-                <Form.ControlLabel style={{ fontSize: "1.1rem" }}>نام کاربری</Form.ControlLabel>
-                <Form.Control name="username" />
+                <Form.ControlLabel
+                  className="text-mianColor font-semibold"
+                  style={{ fontSize: "1.2rem" }}
+                >
+                  نام کاربری
+                </Form.ControlLabel>
+                <Form.Control className="h-10 text-lg" name="username" />
               </Form.Group>
               <Form.Group>
-                <Form.ControlLabel style={{ fontSize: "1.1rem" }}>رمز عبور</Form.ControlLabel>
-                <Form.Control name="password" type="password" autoComplete="off" />
+                <Form.ControlLabel
+                  className="text-mianColor font-semibold"
+                  style={{ fontSize: "1.2rem" }}
+                >
+                  رمز عبور
+                </Form.ControlLabel>
+                <Form.Control
+                  className="h-10 text-lg"
+                  name="password"
+                  type="password"
+                  autoComplete="off"
+                />
               </Form.Group>
             </div>
 
             <button
-              className="bg-mianColor w-full h-10 rounded-xl text-white font-bold text-xl"
+              className="bg-mianColor hover:bg-mianColor/70 transition w-full h-10 rounded-xl text-white font-bold text-xl"
               onClick={handleSubmit}
             >
               ورود

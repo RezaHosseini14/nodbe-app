@@ -3,23 +3,30 @@ import { Pagination, Table } from "rsuite";
 import { useMutation, useQuery } from "react-query";
 import toast from "react-hot-toast";
 import Link from "next/link";
+
+//icons
 import { IoEyeOutline, IoTrashOutline, IoCreateOutline } from "react-icons/io5";
 
-import { allContent, allContentAdmin, deleteContent } from "@/services/content/contentServices";
+//services
+import { allContentAdmin, deleteContent } from "@/services/content/contentServices";
 import { shamsi } from "@/utils/functions";
 import { useState } from "react";
+import ConfirmModal from "@/components/shared/ConfirmModal";
+
 const { Column, HeaderCell, Cell } = Table;
-
 function ContentPage() {
-  const [limit, setLimit] = useState(10);
-  const [page, setPage] = useState(1);
-
-  const handleChangeLimit = (dataKey) => {
+  //pagination
+  const [limit, setLimit] = useState<number>(10);
+  const [page, setPage] = useState<number>(1);
+  const [open, setOpen] = useState<boolean>(false);
+  const [rowDataId, setRowDataId] = useState<string>("");
+  const handleChangeLimit = (dataKey: number) => {
     setPage(1);
     setLimit(dataKey);
   };
 
-  const { data, error, isLoading, refetch } = useQuery(
+  //get all content for admin
+  const { data, isLoading, refetch } = useQuery(
     ["content", page, limit],
     () => allContentAdmin(page, limit),
     {
@@ -27,12 +34,8 @@ function ContentPage() {
     }
   );
 
-  const {
-    data: deleteContentData,
-    error: deleteContentError,
-    isLoading: deleteContentIsLoading,
-    mutateAsync,
-  } = useMutation({ mutationFn: deleteContent });
+  //remove content
+  const { mutateAsync } = useMutation({ mutationFn: deleteContent });
 
   const removeContentHandler = async (id: string) => {
     try {
@@ -44,6 +47,16 @@ function ContentPage() {
     } catch (error: any) {
       toast.error(error?.response?.data?.message);
     }
+  };
+
+  const handleOpen = (id: string) => {
+    setOpen(true);
+    setRowDataId(id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setRowDataId("");
   };
 
   return (
@@ -143,7 +156,7 @@ function ContentPage() {
                 <Link href={`/content/${rowData._id}`}>
                   <IoEyeOutline className="text-blue-500 text-lg" />
                 </Link>
-                <Link href={``} onClick={() => removeContentHandler(rowData._id)}>
+                <Link href={``} onClick={() => handleOpen(rowData._id)}>
                   <IoTrashOutline className="text-red-500 text-lg" />
                 </Link>
               </div>
@@ -171,6 +184,13 @@ function ContentPage() {
           onChangeLimit={handleChangeLimit}
         />
       </div>
+      <ConfirmModal
+        message="مراسم حذف شود ؟"
+        open={open}
+        handleClose={handleClose}
+        apiFunc={removeContentHandler}
+        id={rowDataId}
+      />
     </div>
   );
 }

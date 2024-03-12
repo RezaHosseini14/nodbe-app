@@ -13,11 +13,16 @@
     "@sentry/nextjs": "^7.99.0",
     "@sentry/node": "^7.99.0",
     "@sentry/tracing": "^7.99.0",
+    "@tanstack/react-query-devtools": "^5.24.0",
     "axios": "^1.6.7",
     "framer-motion": "^11.0.3",
+    "jalali-moment": "^3.3.11",
+    "lightbox.js-react": "^1.0.2",
     "next": "14.1.0",
+    "node-cron": "^3.0.3",
     "react": "^18",
     "react-apexcharts": "^1.4.1",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^18",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^5.0.1",
@@ -27,7 +32,9 @@
     "react-spinners": "^0.13.8",
     "rsuite": "^5.53.2",
     "sharp": "^0.33.2",
-    "swiper": "^11.0.6"
+    "swiper": "^11.0.6",
+    "wavesurfer-react": "^3.0.2",
+    "wavesurfer.js": "^7.7.3"
   },
   "devDependencies": {
     "@types/node": "^20",

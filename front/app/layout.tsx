@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { CustomProvider } from "rsuite";
-import fa_IR from "rsuite/locales/fa_IR";
+
 import { Toaster } from "react-hot-toast";
 import Providers from "./Providers";
 import ReduxProvider from "./ReduxProvider";
@@ -19,11 +18,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fa" dir="rtl">
       <body className="">
         <Toaster />
-        <CustomProvider locale={fa_IR} rtl>
-          <Providers>
-            <ReduxProvider>{children}</ReduxProvider>
-          </Providers>
-        </CustomProvider>
+        <ReduxProvider>
+            <Providers>{children}</Providers>
+        </ReduxProvider>
       </body>
     </html>
   );

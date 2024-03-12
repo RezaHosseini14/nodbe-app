@@ -1,7 +1,14 @@
 import { ReactNode } from "react";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import Link from "next/link";
+
+//components
+import UsersIcon from "@/components/shared/icons/UsersIcon";
+import ImageIcon from "@/components/shared/icons/ImageIcon";
+import CalenderIcon from "@/components/shared/icons/CalenderIcon";
+import SendIcon from "@/components/shared/icons/SendIcon";
+import HomeIcon from "@/components/shared/icons/HomeIcon";
 
 type ChildItem = {
   name: string;
@@ -21,73 +28,40 @@ type SidebarItem = {
 function Sidebar() {
   const { me } = useSelector((state: RootState) => state.auth);
 
-  function shouldShowItem(userRoles: string[], requiredRoles: string[]): boolean {
+  const shouldShowItem = (userRoles: string[], requiredRoles: string[]): boolean => {
     return userRoles?.includes("SUPER") || userRoles?.some((role) => requiredRoles.includes(role));
-  }
+  };
 
   const sidebarData: SidebarItem[] = [
     {
       name: "خانه",
       route: "/dashboard",
       show: true,
-      icon: <span className="iconlyBulk-Home"></span>,
+      icon: <HomeIcon />,
     },
     {
       name: "کاربران",
       show: shouldShowItem(me?.roles, ["ADMIN"]),
       route: "/dashboard/contact",
-      icon: (
-        <span className="iconlyBulk-User3">
-          <span className="path1"></span>
-          <span className="path2"></span>
-          <span className="path3"></span>
-          <span className="path4"></span>
-          <span className="path5"></span>
-          <span className="path6"></span>
-        </span>
-      ),
+      icon: <UsersIcon />,
       children: [
         {
           name: "ایجاد کاربر",
           route: "/dashboard/contact/create",
           show: true,
-          icon: (
-            <span className="iconlyBulk-Add-User">
-              <span className="path1"></span>
-              <span className="path2"></span>
-              <span className="path3"></span>
-            </span>
-          ),
+          icon: <UsersIcon />,
         },
         {
           name: "فعالیت کاربران",
           route: "/dashboard/contact/useractive",
           show: true,
-          icon: (
-            <span className="iconlyBulk-User3">
-              <span className="path1"></span>
-              <span className="path2"></span>
-              <span className="path3"></span>
-              <span className="path4"></span>
-              <span className="path5"></span>
-              <span className="path6"></span>
-            </span>
-          ),
+          icon: <UsersIcon />,
         },
         {
           name: "فعالیت کل",
           route: "/dashboard/contact/auditlog",
           show: shouldShowItem(me?.roles, ["SUPER"]),
-          icon: (
-            <span className="iconlyBulk-User3">
-              <span className="path1"></span>
-              <span className="path2"></span>
-              <span className="path3"></span>
-              <span className="path4"></span>
-              <span className="path5"></span>
-              <span className="path6"></span>
-            </span>
-          ),
+          icon: <UsersIcon />,
         },
       ],
     },
@@ -95,23 +69,13 @@ function Sidebar() {
       name: "مدیریت محتوا ها",
       route: "/dashboard/contents",
       show: true,
-      icon: (
-        <span className="iconlyBulk-Image">
-          <span className="path1"></span>
-          <span className="path2"></span>
-        </span>
-      ),
+      icon: <ImageIcon />,
       children: [
         {
           name: "ایجاد محتوا",
           route: "/dashboard/contents/create",
           show: true,
-          icon: (
-            <span className="iconlyBulk-Image">
-              <span className="path1"></span>
-              <span className="path2"></span>
-            </span>
-          ),
+          icon: <ImageIcon />,
         },
       ],
     },
@@ -119,27 +83,13 @@ function Sidebar() {
       name: "مدیریت مناسبت ها",
       route: "/dashboard/events",
       show: true,
-      icon: (
-        <span className="iconlyBulk-Calendar">
-          <span className="path1"></span>
-          <span className="path2"></span>
-          <span className="path3"></span>
-          <span className="path4"></span>
-        </span>
-      ),
+      icon: <CalenderIcon />,
       children: [
         {
           name: "ایجاد مناسبت",
           route: "/dashboard/events/create",
           show: true,
-          icon: (
-            <span className="iconlyBulk-Calendar">
-              <span className="path1"></span>
-              <span className="path2"></span>
-              <span className="path3"></span>
-              <span className="path4"></span>
-            </span>
-          ),
+          icon: <CalenderIcon />,
         },
       ],
     },
@@ -147,23 +97,13 @@ function Sidebar() {
       name: "مدیریت اطلاعیه ها",
       route: "/dashboard/poster",
       show: true,
-      icon: (
-        <span className="iconlyBulk-Send">
-          <span className="path1"></span>
-          <span className="path2"></span>
-        </span>
-      ),
+      icon: <SendIcon />,
       children: [
         {
           name: "ایجاد اطلاعیه",
           route: "/dashboard/poster/create",
           show: true,
-          icon: (
-            <span className="iconlyBulk-Send">
-              <span className="path1"></span>
-              <span className="path2"></span>
-            </span>
-          ),
+          icon: <SendIcon />,
         },
       ],
     },

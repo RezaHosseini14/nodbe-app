@@ -10,8 +10,8 @@ const { contentValidator } = require("../validators/content");
 const router = require("express").Router();
 
 const cpUpload = contentUpload.fields([
-  { name: "files", maxCount: 1 },
-  { name: "images", maxCount: 8 },
+  { name: "files", maxCount: 100 },
+  { name: "images", maxCount: 100 },
 ]);
 
 router.get("/contentuser", checkLogin, ContentController.getContentForUser);
@@ -19,8 +19,8 @@ router.get("/contentofmonth", ContentController.contentOfMonth);
 router.get("/allcount", ContentController.allCount);
 router.post("/add", checkLogin, checkAll, checkUserStatus, cpUpload, ContentController.addContent);
 router.get("/allcontentadmin", checkLogin, checkAll, checkUserStatus, ContentController.getAllContentAdmin);
-router.get("/all", checkUserStatus, ContentController.getAllContent);
-router.get("/:id", checkLogin, checkUserStatus, ContentController.getContent);
+router.get("/all",checkUserStatus, ContentController.getAllContent);
+router.get("/:id",ContentController.getContent);
 router.put("/update/:id", checkLogin, authorize("ADMIN"), checkAll, checkUserStatus, ContentController.updateContent);
 router.delete("/delete/:id", checkLogin, authorize("ADMIN"), checkAll, checkUserStatus, ContentController.deleteContent);
 

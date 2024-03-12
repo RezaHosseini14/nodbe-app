@@ -1,34 +1,19 @@
+//@ts-nocheck
 "use client";
-import SubmitBtn from "@/components/shared/SubmitBtn";
-import { model } from "@/model/user/createUserModel";
-import { addUserFull } from "@/services/contact/contactServices";
-import React, { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useMutation } from "react-query";
 import { CheckPicker, Form } from "rsuite";
 
-const Field = forwardRef((props: any, ref: any) => {
-  const { name, message, label, accepter, error, ...rest } = props;
-  return (
-    <Form.Group
-      controlId={`${name}-10`}
-      ref={ref}
-      className={error ? "has-error" : ""}
-      classPrefix="w-full "
-    >
-      <Form.ControlLabel>{label}</Form.ControlLabel>
-      <Form.Control
-        classPrefix="w-full relative"
-        className="w-full"
-        name={name}
-        accepter={accepter}
-        errorMessage={error}
-        {...rest}
-      />
-      <Form.HelpText>{message}</Form.HelpText>
-    </Form.Group>
-  );
-});
+//model
+import { model } from "@/model/user/createUserModel";
+
+//components
+import SubmitBtn from "@/components/shared/SubmitBtn";
+
+//services
+import { addUserFull } from "@/services/contact/contactServices";
+import Field from "@/components/shared/Field";
 
 type CreateUserFormValue = {
   first_name: string;
@@ -52,7 +37,6 @@ function CreateContactPage() {
     roles: [],
     // images: null,
   });
-  console.log(formValue.roles);
 
   const { data, error, isLoading, mutateAsync } = useMutation({ mutationFn: addUserFull });
 
@@ -97,16 +81,6 @@ function CreateContactPage() {
     }));
   };
 
-  const uploaderStyle = {
-    height: 100,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "1rem",
-    border: "2px dashed red",
-    cursor: "pointer",
-  };
-
   return (
     <Form
       ref={formRef}
@@ -132,16 +106,6 @@ function CreateContactPage() {
         <Field name="username" label="نام کاربری" />
         <Field name="password" type="password" autoComplete="off" label="رمز عبور" />
         <Field name="confirmPassword" type="password" autoComplete="off" label="تکرار رمز عبور" />
-
-        {/* <Form.Group className="xl:col-span-3 lg:col-span-3 md:col-span-3 col-span-2">
-          <Form.ControlLabel className="text-xl font-bold mb-4">تصاویر کاربر</Form.ControlLabel>
-
-          <Uploader autoUpload={false} onChange={handleImageChange} draggable>
-            <div style={uploaderStyle}>
-              <span>تصویر مورد مظر را انتخاب کنید</span>
-            </div>
-          </Uploader>
-        </Form.Group> */}
       </div>
       <Form.Group>
         <SubmitBtn submitFn={handleSubmit} label="ذخیره کاربر" />

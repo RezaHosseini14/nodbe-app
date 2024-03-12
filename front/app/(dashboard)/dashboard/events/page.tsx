@@ -1,15 +1,21 @@
 "use client";
-import Loading from "@/components/shared/Loading";
-import NotFoundData from "@/components/shared/NotFoundData";
-import { allEvents, deleteEvent } from "@/services/events/eventsServices";
-import Link from "next/link";
 import React from "react";
-import toast from "react-hot-toast";
 import { useMutation, useQuery } from "react-query";
+import Link from "next/link";
+import toast from "react-hot-toast";
+
+//icons
 import { IoTrashOutline } from "react-icons/io5";
 
+//components
+import Loading from "@/components/shared/Loading";
+import NotFoundData from "@/components/shared/NotFoundData";
+
+//services
+import { allEvents, deleteEvent } from "@/services/events/eventsServices";
+
 function EventsPage() {
-  const { data, error, isLoading, refetch } = useQuery({ queryFn: allEvents });
+  const { data, isLoading, refetch } = useQuery({ queryFn: allEvents });
 
   const {
     data: deleteEventData,

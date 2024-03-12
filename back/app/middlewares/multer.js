@@ -13,15 +13,30 @@ const profileStorage = multer.diskStorage({
     cb(null, fileName);
   },
 });
-// Define upload for profile images
+
 const profileUpload = multer({ storage: profileStorage });
 
 const contentStorage = multer.diskStorage({
   destination: (req, file, cb) => {
+    const whitelist = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "image/webp",
+      "audio/mpeg",
+      "audio/mp3",
+    ];
+    const filesList = [file];
+    filesList.forEach((element) => {
+      if (!whitelist.includes(element.mimetype.toLowerCase())) {
+        return cb(new Error("این نوع فایل پشتیبانی نمی شود"));
+      }
+    });
     const contentFolderPath = path.join("public", "uploads", "contents");
     if (!fs.existsSync(contentFolderPath)) {
       fs.mkdirSync(contentFolderPath, { recursive: true });
     }
+
     cb(null, contentFolderPath);
   },
   filename: (req, file, cb) => {
@@ -30,9 +45,7 @@ const contentStorage = multer.diskStorage({
     cb(null, fileName);
   },
 });
-// Define upload for content images
 const contentUpload = multer({ storage: contentStorage });
-
 
 const posterStorage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -54,5 +67,5 @@ const posterUpload = multer({ storage: posterStorage });
 module.exports = {
   profileUpload,
   contentUpload,
-  posterUpload
+  posterUpload,
 };

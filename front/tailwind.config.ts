@@ -18,7 +18,8 @@ const config: Config = {
       },
       colors: {
         mianColor: "#739072",
-        mianColorDark: "#111111",
+        mianColorDark: "#bc1717",
+        mianColorDarkBox: "rgb(80, 0, 0)",
         mianColorLight: "#1CA003",
       },
       container: {

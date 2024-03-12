@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import SubmitBtn from "@/components/shared/SubmitBtn";
 import { uploaderStyle } from "@/json/style";
@@ -11,29 +12,9 @@ import { Form, Toggle, Uploader, SelectPicker } from "rsuite";
 import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import Field from "@/components/shared/Field";
 
-const Field = forwardRef((props: any, ref: any) => {
-  const { name, message, label, accepter, error, ...rest } = props;
-  return (
-    <Form.Group
-      controlId={`${name}-10`}
-      ref={ref}
-      className={error ? "has-error" : ""}
-      classPrefix="w-full "
-    >
-      <Form.ControlLabel>{label}</Form.ControlLabel>
-      <Form.Control
-        classPrefix="w-full relative"
-        className="w-full"
-        name={name}
-        accepter={accepter}
-        errorMessage={error}
-        {...rest}
-      />
-      <Form.HelpText>{message}</Form.HelpText>
-    </Form.Group>
-  );
-});
+
 
 type CreateContentFormValue = {
   title: string;
@@ -45,8 +26,10 @@ type CreateContentFormValue = {
   event: any;
 };
 
-export default function UpdateContent({ params }: { params: { id: string } }) {
+function UpdateContent({ params }: { params: { id: string } }) {
   const [createValue, setCreateValue] = useState<string>("");
+  const [fileList, setFileList] = useState<any>([]);
+  const [imageList, setImageList] = useState<any>([]);
   const [publishTimeValue, setPublishTimeValue] = useState<string>("");
 
   const formRef = useRef<any>();
@@ -72,7 +55,7 @@ export default function UpdateContent({ params }: { params: { id: string } }) {
     error: getContentError,
     isLoading: getContentLoading,
   } = useQuery(["contentById", params.id], () => contentById(params.id));
-console.log(getContentData)
+
   useEffect(() => {
     if (getContentData && getContentData.data && getContentData.data.content) {
       setFormValue({
@@ -82,39 +65,49 @@ console.log(getContentData)
         files: getContentData?.data?.content.files || null,
         event: getContentData?.data?.content.event || null,
       });
+
+      setCreateValue(getContentData?.data?.content.create || "");
+      setPublishTimeValue(getContentData?.data?.content.publishTime || "");
+      setFileList(getContentData?.data?.content.files || []);
+      setImageList(getContentData?.data?.content.images || []);
     }
   }, [getContentData]);
 
-  const handleSubmit = async () => {
-    if (!formRef.current.check()) {
-      return;
-    } else {
-      try {
-        const { title, desc, event, show, images, files } = formValue;
+  console.log(getContentData);
 
-        const formData = new FormData();
-        formData.append("title", title);
-        formData.append("desc", desc);
-        // formData.append("type", type);
-        formData.append("create", createValue.unix * 1000);
-        formData.append("publishTime", publishTimeValue.unix * 1000);
-        formData.append("show", show);
-        formData.append("event", event);
-        images.forEach((file: any) => {
-          formData.append("images", file.blobFile);
-        });
-        files.forEach((file: any) => {
-          formData.append("files", file.blobFile);
-        });
-        const res = await mutateAsync(formData);
-        if (res?.status == 201) {
-          toast.success(res?.data?.message);
-        }
-      } catch (error: any) {
-        toast.error(error?.response?.data?.message);
-      }
-    }
-  };
+  // const handleSubmit = async () => {
+  //   if (!formRef.current.check()) {
+  //     return;
+  //   } else {
+  //     try {
+  //       const { title, desc, event, show, images, files } = formValue;
+
+  //       const createTimeNow = createValue.unix * 1000;
+  //       const publishTimeNow = publishTimeValue.unix * 1000;
+
+  //       const formData = new FormData();
+  //       formData.append("title", title);
+  //       formData.append("desc", desc);
+  //       // formData.append("type", type);
+  //       formData.append("create", createTimeNow);
+  //       formData.append("publishTime", publishTimeNow);
+  //       formData.append("show", show);
+  //       formData.append("event", event);
+  //       images.forEach((file: any) => {
+  //         formData.append("images", file.blobFile);
+  //       });
+  //       files.forEach((file: any) => {
+  //         formData.append("files", file.blobFile);
+  //       });
+  //       const res = await mutateAsync(formData);
+  //       if (res?.status == 201) {
+  //         toast.success(res?.data?.message);
+  //       }
+  //     } catch (error: any) {
+  //       toast.error(error?.response?.data?.message);
+  //     }
+  //   }
+  // };
 
   const handleImageChange = (images: File) => {
     setFormValue((prevFormValue) => ({
@@ -147,9 +140,6 @@ console.log(getContentData)
           data={eventData?.data?.events.map((item: any) => {
             return { label: item.title, value: item._id };
           })}
-          // sticky
-          // groupBy="parent_id"
-          // defaultValue={["Kenya", "Julius"]}
           loading={eventLoading}
         />
 
@@ -186,7 +176,15 @@ console.log(getContentData)
         <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 col-span-2">
           <Form.ControlLabel className="text-xl font-bold mb-4">تصاویر مراسم</Form.ControlLabel>
 
-          <Uploader autoUpload={false} onChange={handleImageChange} draggable multiple>
+          <Uploader
+            fileList={imageList}
+            autoUpload={false}
+            onChange={handleImageChange}
+            draggable
+            multiple
+            listType="picture-text"
+            accept="image/*"
+          >
             <div style={uploaderStyle}>
               <span>تصویر مورد نظر را انتخاب کنید</span>
             </div>
@@ -197,7 +195,14 @@ console.log(getContentData)
           <Form.ControlLabel className="text-xl font-bold mb-4">
             فایل ها صوتی و تصویری
           </Form.ControlLabel>
-          <Uploader autoUpload={false} onChange={handleFileChange} draggable multiple>
+          <Uploader
+            fileList={fileList}
+            autoUpload={false}
+            onChange={handleFileChange}
+            draggable
+            multiple
+            accept="audio/mp3"
+          >
             <div style={uploaderStyle}>
               <span>فایل مورد نظر را انتخاب کنید</span>
             </div>
@@ -208,3 +213,5 @@ console.log(getContentData)
     </Form>
   );
 }
+
+export default UpdateContent;

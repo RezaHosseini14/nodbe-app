@@ -1,7 +1,10 @@
+//@ts-nocheck
+
 "use client";
 
 import Head from "next/head";
 import * as Sentry from "@sentry/nextjs";
+import Error from "next/error";
 
 export default function Page() {
   return (

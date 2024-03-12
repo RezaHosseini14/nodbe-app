@@ -1,3 +1,4 @@
+//@ts-nocheck
 export const shamsi = (date: any) => {
   const d = new Date(date);
   const newDate = d.toLocaleDateString("fa");
@@ -48,6 +49,10 @@ export const getRoles = (roles: string[]) => {
   return userRole;
 };
 
-export function shouldShowItem(userRoles: string[], requiredRoles: string[]): boolean {
+export const shouldShowItem = (userRoles: string[], requiredRoles: string[]): boolean => {
   return requiredRoles.some((role) => userRoles?.includes(role));
-}
+};
+
+export const toPersianYear = (gregorianYear: number): number => {
+  return gregorianYear - 621;
+};

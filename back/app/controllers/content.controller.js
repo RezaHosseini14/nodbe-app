@@ -61,24 +61,40 @@ class ContentController {
 
   async getAllContent(req, res, next) {
     try {
+      //pagination
       const page = parseInt(req.query.page) || 1;
       const limit = parseInt(req.query.limit) || 10;
-
       const totalContents = await ContentModel.countDocuments();
-
       const skip = (page - 1) * limit;
 
-      const currentDate = new Date();
+      //query
+      const { slug, year } = req.query;
+      let query = {};
 
-      const contents = await ContentModel.find({
-        $or: [{ publishTime: { $lte: currentDate } }, { publishTime: null }],
-      })
-        .sort([
-          ["publishTime", "desc"],
-          ["create", "desc"],
-        ])
+      if (slug && year) {
+        const startDate = new Date(`${year}-03-21`);
+        const endDate = new Date(`${parseInt(year) + 1}-03-20`);
+        query.event = slug;
+        query.create = {
+          $gte: startDate,
+          $lte: endDate,
+        };
+      } else if (year) {
+        const startDate = new Date(`${year}-03-21`);
+        const endDate = new Date(`${parseInt(year) + 1}-03-20`);
+        query.create = {
+          $gte: startDate,
+          $lte: endDate,
+        };
+      } else if (slug) {
+        query.event = slug;
+      }
+
+      const contents = await ContentModel.find(query)
+        .sort({ publishTime: -1, create: -1 })
         .skip(skip)
         .limit(limit);
+
       if (!contents || contents.length === 0) {
         throw { status: 404, success: false, message: "محتوایی یافت نشد" };
       }
@@ -97,11 +113,11 @@ class ContentController {
 
   async addContent(req, res, next) {
     try {
-      const { title, create, desc, type, show, event, publishTime } = req.body;
+      const { title, create, desc, type, show, event, publishTime, fileList } = req.body;
       const imagesArry = req.files.images;
       const filesArry = req.files.files;
       const images = listOfImages(imagesArry);
-      const files = mamad(filesArry);
+      const files = mamad(filesArry, fileList);
 
       const currentTime = new Date().getTime();
       const status = currentTime > publishTime;
@@ -145,7 +161,8 @@ class ContentController {
         };
 
       const deletecontent = await ContentModel.deleteOne({ _id: id });
-      if (deletecontent.deletedCount == 0) throw { status: 400, success: false, message: "محتوا حذف نشد" };
+      if (deletecontent.deletedCount == 0)
+        throw { status: 400, success: false, message: "محتوا حذف نشد" };
       return res.status(202).json({
         status: 202,
         success: true,
@@ -172,7 +189,8 @@ class ContentController {
 
       const updateContent = await ContentModel.updateOne({ _id: id }, { $set: data });
 
-      if (updateContent.modifiedCount == 0) throw { status: 400, success: false, message: "به روزرسانی انجام نشد" };
+      if (updateContent.modifiedCount == 0)
+        throw { status: 400, success: false, message: "به روزرسانی انجام نشد" };
 
       return res.status(200).json({
         status: 200,

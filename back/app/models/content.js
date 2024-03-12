@@ -18,6 +18,8 @@ const contentSchema = new Schema(
     files: [
       {
         title: { type: String },
+        audioType: { type: String },
+        audioDesc: { type: String },
         url: { type: String },
       },
     ],
