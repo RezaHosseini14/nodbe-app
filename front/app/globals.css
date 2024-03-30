@@ -4,7 +4,7 @@
 
 @layer components {
   .card {
-    @apply dark:bg-mianColorDarkBox dark:text-white bg-white/70 rounded-xl p-4 shadow-mainShadow dark:shadow-lg border border-red-900;
+    @apply dark:bg-mianColorDarkBox dark:text-white bg-white/70 rounded-xl p-4 shadow-mainShadow dark:shadow-lg border dark:border-red-900 border-mianColor;
   }
 }
 

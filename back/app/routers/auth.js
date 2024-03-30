@@ -5,7 +5,7 @@ const { registerValidator, loginValidation, registerFullValidator } = require(".
 
 const router = require("express").Router();
 
-router.get("/token", AuthController.refreshToken);
+router.get("/refreshToken", AuthController.refreshToken);
 router.post("/login", AuthController.login);
 router.post("/register", AuthController.register);
 // router.post("/register", checkLogin, registerValidator(), validatorMapper, AuthController.register);

@@ -1,6 +1,5 @@
-import PageLoading from "@/components/shared/PageLoading";
-import { BeatLoader } from "react-spinners";
+import LogoLoading from "@/components/shared/LogoLoading";
 
 export default function Loading() {
-  return <PageLoading loading={true} />;
+  return <LogoLoading loading={true} />;
 }

@@ -21,8 +21,21 @@ module.exports = class Application {
 
   configApplication() {
     const path = require("path");
-    this.#app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
-    // this.#app.use(cors({ credentials: true, origin: "https://nodbe-front.liara.run" }));
+
+    const corsOptions = {
+      origin: true,
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // متد‌های مجاز
+      credentials: true, // اجازه ارسال کوکی‌ها
+      preflightContinue: false, // غیرفعال کردن پاسخ‌های OPTIONS پیش‌زمینه
+      optionsSuccessStatus: 204, // موفقیت کد برای پاسخ‌های OPTIONS
+    };
+
+    this.#app.use(cors(corsOptions));
+    // if (process.env.NODE_ENV == "development") {
+    //   this.#app.use(cors({ credentials: true, origin: "http://localhost:3001" }));
+    // } else {
+    //   this.#app.use(cors({ credentials: true, origin: "https://nodbe-front.liara.run" }));
+    // }
     this.#app.use(cookieParser());
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));

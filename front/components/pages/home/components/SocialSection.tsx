@@ -4,8 +4,6 @@ import { SiAparat } from "react-icons/si";
 import { FaTelegramPlane } from "react-icons/fa";
 import Link from "next/link";
 import { Tooltip, Whisper } from "rsuite";
-import Image from "next/image";
-import baleIcon from "@/assets/img/icons/bale-icon.svg";
 import BaleIcon from "@/components/shared/icons/BaleIcon";
 interface ISocialMedia {
   social: string;
@@ -44,8 +42,9 @@ function SocialSection() {
   ];
   return (
     <div className="flex items-center gap-4 text-2xl z-50">
-      {socialMedia.map((item) => (
+      {socialMedia.map((item: any, index: number) => (
         <Whisper
+          key={index}
           placement="bottom"
           controlId="control-id-hover"
           trigger="hover"

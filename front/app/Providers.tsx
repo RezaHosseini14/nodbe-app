@@ -27,8 +27,8 @@ function Providers({ children }: { children: ReactNode }) {
   );
 
   return (
-    // <CustomProvider theme={theme ? "dark" : "light"} locale={fa_IR} rtl>
-    <CustomProvider locale={fa_IR} rtl>
+    // <CustomProvider locale={fa_IR} rtl>
+    <CustomProvider theme={theme ? "dark" : "light"} locale={fa_IR} rtl>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </CustomProvider>
   );

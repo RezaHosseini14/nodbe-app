@@ -15,7 +15,6 @@ import CalenderIcon from "@/components/shared/icons/CalenderIcon";
 function DashboardPage() {
   const { data, isLoading } = useQuery({ queryKey: ["allcount"], queryFn: allCount });
   const date = new Date().toLocaleDateString("fa-IR");
-
   return (
     <div className="grid grid-cols-12 grid-rows-12 gap-8 h-full">
       <DashboardCard

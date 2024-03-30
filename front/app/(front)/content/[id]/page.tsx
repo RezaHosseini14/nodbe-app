@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
-import { initLightboxJS, SlideshowLightbox } from "lightbox.js-react";
+import { SlideshowLightbox } from "lightbox.js-react";
 import moment from "jalali-moment";
 import { useQuery } from "react-query";
 
@@ -25,9 +24,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const create = data?.data?.content?.create || null;
 
-  const persianDate = create
-    ? moment(create, "YYYY-MM-DDTHH:mm:ssZ").locale("fa").format("D MMMM YYYY")
-    : "";
+  const persianDate = create ? moment(create, "YYYY-MM-DDTHH:mm:ssZ").locale("fa").format("D MMMM YYYY") : "";
 
   const imageLoader = ({ src, width, quality }) => {
     return `${process.env.NEXT_PUBLIC_API_URL}/${src}?w=${width}&q=${quality || 75}`;
@@ -61,20 +58,14 @@ export default function Page({ params }: { params: { id: string } }) {
                 <hr className="border dark:border-mianColorDark border-mianColor" />
                 <div className="flex flex-col md:gap-4 gap-8 mt-6">
                   {data?.data?.content?.files.map((file: any, index: number) => (
-                    <div
-                      key={index}
-                      className="flex items-center sm:justify-between text-lg sm:flex-row flex-col"
-                    >
+                    <div key={index} className="flex items-center sm:justify-between text-lg sm:flex-row flex-col">
                       <div className="audio-details flex items-center gap-2">
                         <span>{file?.audioType} :</span>
                         <span>{file?.audioDesc}</span>
                       </div>
                       <div key={index} className="">
                         <audio controls className="">
-                          <source
-                            src={`${process.env.NEXT_PUBLIC_API_URL}/${file?.url}`}
-                            type="audio/mp3"
-                          />
+                          <source src={`${process.env.NEXT_PUBLIC_API_URL}/${file?.url}`} type="audio/mp3" />
                         </audio>
                         {/* <Waveform audio={`${process.env.NEXT_PUBLIC_API_URL}/${file?.url}`} /> */}
                       </div>
@@ -91,32 +82,14 @@ export default function Page({ params }: { params: { id: string } }) {
                   <h2 className="font-bold text-2xl">تصاویر مراسم</h2>
                 </div>
                 <hr className="border dark:border-mianColorDark border-mianColor" />
-                {/* <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-2 sm:gap-8 gap-4 mt-6">
-                    {data?.data?.content?.images.map((item: any, index: number) => (
-                      <GalleryLightBox images={data?.data?.content?.images}>
-                        <div
-                          key={index}
-                          className="rounded-3xl bg-black w-full overflow-hidden aspect-square relative h-full"
-                        >
-                          <Image
-                            src={`${process.env.NEXT_PUBLIC_API_URL}/${item?.url}`}
-                            alt="img"
-                            layout="fill"
-                            loading="lazy"
-                            loader={imageLoader}
-                            objectFit="cover"
-                          />
-                        </div>
-                      </GalleryLightBox>
-                    ))}
-                  </div> */}
 
                 <SlideshowLightbox className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-2 sm:gap-8 gap-4 mt-6">
                   {data?.data?.content?.images.map((item: any, index: number) => (
-                    <img
-                      className="w-full h-full object-cover rounded-lg"
-                      src={`${process.env.NEXT_PUBLIC_API_URL}/${item?.url}`}
-                    />
+                      <img
+                        className="w-full h-full object-cover rounded-lg"
+                        src={`${process.env.NEXT_PUBLIC_API_URL}/${item?.url}`}
+                        alt={`تصویر شماره ${index + 1}`}
+                      />
                   ))}
                 </SlideshowLightbox>
               </div>

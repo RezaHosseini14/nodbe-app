@@ -12,7 +12,7 @@ function MediaSection() {
       viewport={{ once: true, amount: 0.8 }}
       variants={cardVariants}
     >
-      <TitleBox title="نوا نما" />
+      <TitleBox title="نوا نما" margin={true} />
     </motion.div>
   );
 }

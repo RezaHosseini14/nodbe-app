@@ -3,7 +3,6 @@ import Link from "next/link";
 import { useQuery } from "react-query";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Navigation, Pagination, Scrollbar } from "swiper/modules";
-import { ContentType } from "@/app/(front)/page";
 import { motion } from "framer-motion";
 import "swiper/css";
 
@@ -15,6 +14,7 @@ import Card from "@/components/shared/Card";
 import Loading from "@/components/shared/Loading";
 import TitleBox from "@/components/shared/TitleBox";
 import { cardVariants } from "@/utils/constant";
+import { ContentType } from "@/types/types";
 
 function ContentSlider() {
   const { data, isLoading } = useQuery(["allcontent", null, null], () => allContent(null, null));
@@ -33,9 +33,9 @@ function ContentSlider() {
             <Loading />
           </div>
         ) : (
-          <div className="">
+          <>
             <div className="flex items-center justify-between mb-6">
-              <TitleBox title="آخرین مراسمات" />
+              <TitleBox title="آخرین مراسمات" margin={false} />
 
               <Link className="font-medium text-xl dark:text-white text-mianColor" href="/contents">
                 بیشتر
@@ -73,7 +73,7 @@ function ContentSlider() {
                 <p className="font-medium text-xl">محتوای یافت نشد</p>
               </div>
             )}
-          </div>
+          </>
         )}
       </motion.div>
     </>

@@ -1,72 +1,64 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import moment from "jalali-moment";
-import { useQuery } from "react-query";
 import MainHeader from "./components/Header";
 import Footer from "./components/Footer";
-import { checkHoliday } from "@/services/content/contentServices";
 import { holidays } from "@/json/holiday";
 import { CHANGE_THEME } from "@/redux/slices/darkmode/themeSlice";
-import { AnyAction } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
-interface Event {
-  description: string;
-  is_religious: boolean;
-  is_holiday: boolean;
-}
+// ثابت‌های مربوط به حالت‌های نوری و تاریک
+const LIGHT_MODE = "light";
+const DARK_MODE = "dark";
 
-interface Holiday {
-  date: string;
-  events?: Event[];
-}
-
-interface ReligiousHoliday {
-  description: string;
-  isHoliday: boolean;
-  eventCategory: string;
-}
+// تابع برای به دست آوردن تاریخ امروز در تقویم جلالی
+const getTodayDate = () => moment().format("jYYYY/jM/jD");
 
 const MainLayout = ({ children }: any) => {
-  const dispatch: (dispatch: any) => Promise<AnyAction> = useDispatch();
+  const dispatch = useDispatch();
   const { theme } = useSelector((state: RootState) => state.theme);
 
-  useEffect(() => {
-    const date = moment().format("jYYYY/jM/jD");
-
-    const religiousHolidays: ReligiousHoliday[] = holidays
-      ?.filter((holiday: Holiday) => holiday.date === date)
-      .flatMap((holiday: Holiday) =>
+  // دریافت تعطیلی‌های مذهبی و تغییر تم اگر لازم است
+  const fetchReligiousHolidays = useCallback(() => {
+    const date = getTodayDate();
+    const religiousHolidays = holidays
+      ?.filter((holiday) => holiday.date === date)
+      .flatMap((holiday) =>
         holiday.events
-          ?.filter((event: Event) => event.is_religious)
-          .map((event: Event) => ({
+          ?.filter((event) => event.is_religious)
+          .map((event) => ({
             description: event.description,
             isHoliday: event.is_holiday,
             eventCategory: event.description.includes("ولادت") ? "ولادت" : "شهادت",
           }))
       );
 
-    if (
-      religiousHolidays &&
-      religiousHolidays.length &&
-      religiousHolidays[0]?.eventCategory === "شهادت"
-    ) {
-      localStorage.setItem("darkmode", "dark");
+    if (religiousHolidays && religiousHolidays.length && religiousHolidays[0]?.eventCategory === "شهادت") {
+      localStorage.setItem("darkmode", DARK_MODE);
       dispatch(CHANGE_THEME(true));
     } else {
-      localStorage.setItem("darkmode", "light");
+      localStorage.setItem("darkmode", LIGHT_MODE);
       dispatch(CHANGE_THEME(false));
     }
+  }, [dispatch]);
 
-    if (localStorage.getItem("darkmode") === "dark") {
-      dispatch(CHANGE_THEME(false));
-    } else {
+  // بروزرسانی تم بر اساس اطلاعات ذخیره شده محلی
+  const updateThemeFromLocalStorage = useCallback(() => {
+    const storedTheme = localStorage.getItem("darkmode");
+    if (storedTheme === DARK_MODE && !theme) {
       dispatch(CHANGE_THEME(true));
+    } else if (storedTheme === LIGHT_MODE && theme) {
+      dispatch(CHANGE_THEME(false));
     }
+  }, [dispatch, theme]);
+
+  // اثر برای مدیریت تغییرات تم و دریافت تعطیلی‌های مذهبی
+  useEffect(() => {
+    fetchReligiousHolidays();
+    updateThemeFromLocalStorage();
 
     const body = document.body;
-
     if (theme) {
       body.classList.remove("light");
       body.classList.add("dark");
@@ -76,7 +68,7 @@ const MainLayout = ({ children }: any) => {
       body.classList.add("light");
       body.setAttribute("data-mode", "light");
     }
-  }, [theme]);
+  }, [theme, fetchReligiousHolidays, updateThemeFromLocalStorage]);
 
   return (
     <>

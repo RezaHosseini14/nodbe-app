@@ -3,7 +3,6 @@ import Image from "next/image";
 import { motion, Variants } from "framer-motion";
 import logo from "@/assets/img/logo.svg";
 import SocialSection from "@/components/pages/home/components/SocialSection";
-import BubbleBlur from "@/components/shared/BubbleBlur";
 import { usePathname } from "next/navigation";
 
 function MainHeader() {
@@ -25,7 +24,6 @@ function MainHeader() {
 
   const scrollToElement = (id: string) => {
     const element = document.getElementById(id);
-    console.log(path);
     if (path === "/") {
       if (element) {
         window.scrollTo({
@@ -39,9 +37,7 @@ function MainHeader() {
   };
 
   return (
-    <div className="header-container relative pt-16 bg-gradient-to-t from-transparent dark:to-black/50 to-black/10 mb-20">
-      <BubbleBlur />
-
+    <div className="header-container relative pt-16 bg-gradient-to-t from-transparent dark:to-black/50 to-black/10 mb-20 z-30">
       <div className="container">
         <motion.div
           className="flex flex-col items-center justify-center w-full gap-8"
@@ -50,30 +46,32 @@ function MainHeader() {
           viewport={{ once: true, amount: 0.8 }}
           variants={headerVariants}
         >
-          <Image className="main-logo" src={logo} alt="logo" width={200} height={200} />
-          <div className="relative w-full border-b border-t dark:border-mianColorDark border-green-600 ">
-            <div className=" w-full h-16 rounded-3xl p-4 flex items-center justify-center backdrop-blur-xl">
-              <ul className="flex items-center gap-8 w-full text-xl font-medium justify-center z-10 dark:text-mianColorDark text-green-700">
-                <li>
+          <Link href="/">
+            <Image className="main-logo" src={logo} alt="logo" width={200} height={200} />
+          </Link>
+          <div className="relative w-full h-fit border-b border-t dark:border-mianColorDark border-green-600">
+            <div className=" w-full rounded-3xl md:p-4 p-1 grid place-content-center backdrop-blur-xl">
+              <ul className="md:flex grid grid-cols-3 items-center md:gap-8 gap-4 w-full md:text-xl text-lg font-medium justify-center z-10 dark:text-mianColorDark text-green-700 m-0">
+                <li className="text-center">
                   <Link href="/">خانه</Link>
                 </li>
 
-                <li>
+                <li className="text-center">
                   <Link href="/contents">مراسمات</Link>
                 </li>
 
-                <li>
+                <li className="text-center">
                   <button onClick={() => scrollToElement("media")}>نوا نما</button>
                 </li>
 
-                <li>
+                <li className="text-center">
                   <button onClick={() => scrollToElement("location")}>موقعیت هیئت</button>
                 </li>
 
-                <li>
+                <li className="text-center">
                   <button onClick={() => scrollToElement("about")}>درباره هیئت</button>
                 </li>
-                <li>
+                <li className="text-center">
                   <button onClick={() => scrollToElement("donate")}>کمک به هیئت</button>
                 </li>
               </ul>

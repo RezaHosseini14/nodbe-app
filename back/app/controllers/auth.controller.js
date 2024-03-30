@@ -1,5 +1,5 @@
 const { UserModel } = require("../models/user");
-const { hashString, tokenGenerator } = require("../utils/functions");
+const { hashString, setRefreshTokenCookie, setAccessTokenCookie } = require("../utils/functions");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -67,6 +67,7 @@ class AuthController {
   async login(req, res, next) {
     try {
       const { username, password } = req.body;
+
       const user = await UserModel.findOne({ username });
       if (!user)
         throw {
@@ -83,6 +84,7 @@ class AuthController {
             success: false,
             message: "حساب کاربری شما مسدود شده است",
           };
+
         const userId = user._id;
         const username = user.username;
         const roles = user.roles;
@@ -114,23 +116,12 @@ class AuthController {
         await UserModel.findByIdAndUpdate(user._id, {
           refresh_token: refreshToken,
         });
-        res.cookie("refreshToken", refreshToken, {
-          httpOnly: true,
-          sameSite: "none",
-          secure: true,
-          maxAge: 24 * 60 * 60 * 1000 * 2,
-        });
 
-        res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          sameSite: "none",
-          secure: true,
-          maxAge: 60 * 1000 * 60 * 24,
-        });
+        setRefreshTokenCookie(res, refreshToken);
+        setAccessTokenCookie(res, accessToken);
 
-        return res.status(200).json({ accessToken, userId, username, roles });
+        return res.status(200).json({ userId, username, roles });
       } else {
-        res.status(401);
         throw {
           status: 401,
           success: false,
@@ -153,11 +144,7 @@ class AuthController {
           message: "مشکلی پیش آمده است",
         });
       }
-
-      const existRefresh = await UserModel.findOne(
-        { refresh_token: refreshToken },
-        { password: 0 }
-      );
+      const user = await UserModel.findOne({ refresh_token: refreshToken }, { password: 0 });
 
       jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET_KEY, (err, decoded) => {
         if (err) {
@@ -168,16 +155,11 @@ class AuthController {
           });
         }
 
-        const accessToken = jwt.sign({ existRefresh }, process.env.ACCESS_TOKEN_SECRET_KEY, {
+        const accessToken = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET_KEY, {
           expiresIn: "1d",
         });
 
-        res.cookie("accessToken", accessToken, {
-          httpOnly: true,
-          sameSite: "none",
-          secure: true,
-          maxAge: 60 * 1000 * 60 * 24,
-        });
+        setAccessTokenCookie(res, accessToken);
 
         res.status(200).json({
           status: "200",
@@ -215,7 +197,7 @@ class AuthController {
   async verifyLogin(req, res, next) {
     try {
       const token = req.cookies.accessToken;
-      const refreshToken = req.cookies.refreshToken;
+      console.log(token);
 
       if (!token)
         throw {
@@ -226,19 +208,28 @@ class AuthController {
 
       jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, async (err, decoded) => {
         if (err) {
-          return res.status(401).json({
+          throw {
             status: 401,
             success: false,
             message: "مشکلی پیش آمده است",
-          });
+          };
         }
 
-        const user = await UserModel.findOne({ _id: decoded.userId }, { password: 0 });
-        return res.status(200).json({
-          status: 200,
-          success: true,
-          user,
-        });
+        const user = await UserModel.findOne({ _id: decoded.userId }, { password: 0, accessToken: 0 });
+
+        if (user) {
+          return res.status(200).json({
+            status: 200,
+            success: true,
+            user,
+          });
+        } else {
+          throw {
+            status: 401,
+            success: false,
+            message: "مشکلی پیش آمده است",
+          };
+        }
       });
     } catch (error) {
       next(error);

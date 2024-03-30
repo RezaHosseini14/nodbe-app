@@ -12,6 +12,7 @@ import DonateSection from "@/components/pages/home/components/DonateSection";
 import LocationSection from "@/components/pages/home/components/LocationSection";
 import AboutSection from "@/components/pages/home/components/AboutSection";
 import MediaSection from "@/components/pages/home/components/MediaSection";
+import BubbleBlur from "@/components/shared/BubbleBlur";
 
 const Home = () => {
   const { data: posterData, isLoading: posterLoading } = useQuery({
@@ -21,6 +22,8 @@ const Home = () => {
 
   return (
     <PageLoading loading={posterLoading}>
+      <BubbleBlur />
+
       <div className="h-full relative">
         <div className="grid lg:grid-cols-12 grid-cols-8 gap-8">
           <ContentSlider />

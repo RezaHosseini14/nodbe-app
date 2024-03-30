@@ -13,8 +13,7 @@ import DatePicker from "react-multi-date-picker";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import Field from "@/components/shared/Field";
-
-
+import ImageUploader from "@/components/shared/ImageUploader";
 
 type CreateContentFormValue = {
   title: string;
@@ -43,11 +42,7 @@ function UpdateContent({ params }: { params: { id: string } }) {
     event: "",
   });
 
-  const {
-    data: eventData,
-    error: eventerror,
-    isLoading: eventLoading,
-  } = useQuery({ queryFn: allEvents });
+  const { data: eventData, error: eventerror, isLoading: eventLoading } = useQuery({ queryFn: allEvents });
   const { data, error, isLoading, mutateAsync } = useMutation({ mutationFn: createContent });
 
   const {
@@ -72,8 +67,6 @@ function UpdateContent({ params }: { params: { id: string } }) {
       setImageList(getContentData?.data?.content.images || []);
     }
   }, [getContentData]);
-
-  console.log(getContentData);
 
   // const handleSubmit = async () => {
   //   if (!formRef.current.check()) {
@@ -145,14 +138,7 @@ function UpdateContent({ params }: { params: { id: string } }) {
 
         <div className="flex flex-col">
           <label htmlFor="create">زمان برگذاری</label>
-          <DatePicker
-            style={{ width: "100%" }}
-            name="create"
-            value={createValue}
-            onChange={setCreateValue}
-            calendar={persian}
-            locale={persian_fa}
-          />
+          <DatePicker style={{ width: "100%" }} name="create" value={createValue} onChange={setCreateValue} calendar={persian} locale={persian_fa} />
         </div>
 
         <div className="flex flex-col">
@@ -176,15 +162,7 @@ function UpdateContent({ params }: { params: { id: string } }) {
         <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 col-span-2">
           <Form.ControlLabel className="text-xl font-bold mb-4">تصاویر مراسم</Form.ControlLabel>
 
-          <Uploader
-            fileList={imageList}
-            autoUpload={false}
-            onChange={handleImageChange}
-            draggable
-            multiple
-            listType="picture-text"
-            accept="image/*"
-          >
+          <Uploader fileList={imageList} autoUpload={false} onChange={handleImageChange} draggable multiple listType="picture-text" accept="image/*">
             <div style={uploaderStyle}>
               <span>تصویر مورد نظر را انتخاب کنید</span>
             </div>
@@ -192,22 +170,15 @@ function UpdateContent({ params }: { params: { id: string } }) {
         </Form.Group>
 
         <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 col-span-2">
-          <Form.ControlLabel className="text-xl font-bold mb-4">
-            فایل ها صوتی و تصویری
-          </Form.ControlLabel>
-          <Uploader
-            fileList={fileList}
-            autoUpload={false}
-            onChange={handleFileChange}
-            draggable
-            multiple
-            accept="audio/mp3"
-          >
+          <Form.ControlLabel className="text-xl font-bold mb-4">فایل ها صوتی و تصویری</Form.ControlLabel>
+          <Uploader fileList={fileList} autoUpload={false} onChange={handleFileChange} draggable multiple accept="audio/mp3">
             <div style={uploaderStyle}>
               <span>فایل مورد نظر را انتخاب کنید</span>
             </div>
           </Uploader>
         </Form.Group>
+
+        <ImageUploader imageList={imageList} />
       </div>
       <Form.Group>{/* <SubmitBtn submitFn={handleSubmit} label="ذخیره محتوا" /> */}</Form.Group>
     </Form>

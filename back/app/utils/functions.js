@@ -8,6 +8,36 @@ function hashString(str) {
   return bcrypt.hashSync(str, salt);
 }
 
+async function setAccessTokenCookie(res, accessToken) {
+  const cookieOptions = {
+    maxAge: 1000 * 60 * 60 * 24 * 1, // would expire after 1 days
+    httpOnly: true, // The cookie only accessible by the web server
+    sameSite: "None",
+    secure: true,
+    // signed: true, // Indicates if the cookie should be signed
+    // sameSite: "Lax",
+    // secure: process.env.NODE_ENV === "development" ? false : true,
+    // domain: process.env.NODE_ENV === "development" ? "localhost" : ".fronthooks.ir",
+  };
+
+  await res.cookie("accessToken", accessToken, cookieOptions);
+}
+
+async function setRefreshTokenCookie(res, refreshToken) {
+  const cookieOptions = {
+    maxAge: 1000 * 60 * 60 * 24 * 2, // would expire after 2 day
+    httpOnly: true, // The cookie only accessible by the web server
+    sameSite: "None",
+    secure: true,
+    // signed: true, // Indicates if the cookie should be signed
+    // sameSite: "Lax",
+    // secure: process.env.NODE_ENV === "development" ? false : true,
+    // domain:
+    //   process.env.NODE_ENV === "development" ? "localhost" : ".fronthooks.ir",
+  };
+  await res.cookie("refreshToken", refreshToken, cookieOptions);
+}
+
 function tokenGenerator(payload) {
   const token = jwt.sign(payload, process.env.SECRET_KEY, {
     expiresIn: "1 days",
@@ -41,10 +71,7 @@ function listOfImages(files) {
 }
 
 function getImageUrl(files) {
-  return path
-    .join(files[0].destination, files[0].filename)
-    .replace(/\\/g, "/")
-    .replace("public/", "");
+  return path.join(files[0].destination, files[0].filename).replace(/\\/g, "/").replace("public/", "");
 }
 
 function mamad(files, fileDetails) {
@@ -62,20 +89,7 @@ function mamad(files, fileDetails) {
 }
 
 function getShamsiMonthName(miladiMonthNumber) {
-  const shamsiMonths = [
-    "فروردین",
-    "اردیبهشت",
-    "خرداد",
-    "تیر",
-    "مرداد",
-    "شهریور",
-    "مهر",
-    "آبان",
-    "آذر",
-    "دی",
-    "بهمن",
-    "اسفند",
-  ];
+  const shamsiMonths = ["فروردین", "اردیبهشت", "خرداد", "تیر", "مرداد", "شهریور", "مهر", "آبان", "آذر", "دی", "بهمن", "اسفند"];
 
   if (miladiMonthNumber >= 1 && miladiMonthNumber <= 12) {
     return shamsiMonths[miladiMonthNumber - 1];
@@ -115,4 +129,6 @@ module.exports = {
   mamad,
   getShamsiMonthName,
   checkYourself,
+  setAccessTokenCookie,
+  setRefreshTokenCookie,
 };

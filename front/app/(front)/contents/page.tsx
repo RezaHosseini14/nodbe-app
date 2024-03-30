@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 import { useState } from "react";
 import { useQuery } from "react-query";
@@ -37,42 +38,32 @@ function FrontContentsPage() {
   return (
     <>
       <PageLoading loading={eventLoading}>
-        <div className="flex flex-col gap-8">
+        <div className="flex flex-col gap-8 h-full">
           <div className="flex items-center justify-between">
             <TitleBox title="مراسمات" />
             <div className="flex items-center gap-4">
               <SelectPicker
                 name="event"
                 label="مناسبت"
-                data={eventData?.data?.events.map((item: any) => {
+                data={eventData?.data?.events.map((item: any, index: number) => {
                   return { label: item.title, value: item._id };
                 })}
                 loading={eventLoading}
                 onChange={setSlug}
               />
 
-              <SelectPicker
-                name="year"
-                label="سال"
-                data={yearData}
-                onChange={setYear}
-                searchable={false}
-              />
+              <SelectPicker name="year" label="سال" data={yearData} onChange={setYear} searchable={false} />
             </div>
           </div>
 
-          <div className="flex items-start gap-8">
-            <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-8 w-full">
-              {data?.data?.contents.length ? (
-                data?.data?.contents.map((content: any, index: number) => (
-                  <Card data={content} index={index} />
-                ))
-              ) : (
-                <div className="flex items-center justify-center col-span-4 h-full">
-                  <h1 className="text-lg font-bold text-gray-500">مراسمی یافت نشد</h1>
-                </div>
-              )}
-            </div>
+          <div className="grid lg:grid-cols-4 sm:grid-cols-3 grid-cols-1 gap-8 w-full">
+            {data?.data?.contents.length ? (
+              data?.data?.contents.map((content: any, index: number) => <Card key={index} data={content} index={index} />)
+            ) : (
+              <div className="flex items-center justify-center col-span-4 h-full">
+                <h1 className="text-lg font-bold text-gray-500">مراسمی یافت نشد</h1>
+              </div>
+            )}
           </div>
         </div>
       </PageLoading>

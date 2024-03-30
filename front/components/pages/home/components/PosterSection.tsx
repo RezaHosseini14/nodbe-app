@@ -25,7 +25,7 @@ function PosterSection({ posterData, posterLoading }: any) {
             <LightBox>
               {posterData?.data?.poster && posterData?.data?.poster.length > 0 ? (
                 <div className="bg-white rounded-xl overflow-hidden aspect-[1/1.41] mb-4 w-full z-10 relative">
-                  <Image
+                  {/* <Image
                     src={`${process.env.NEXT_PUBLIC_API_URL}/${posterData?.data?.poster[0]?.image}`}
                     alt="img"
                     layout="fill"
@@ -33,26 +33,24 @@ function PosterSection({ posterData, posterLoading }: any) {
                     objectFit="cover"
                     quality={1}
                     className="object-cover w-full h-full"
+                  /> */}
+
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_API_URL}/${posterData?.data?.poster[0]?.image}`}
+                    className="object-cover w-full h-full"
+                    alt="poster"
                   />
                 </div>
               ) : (
                 <div className="bg-white rounded-xl overflow-hidden aspect-[1/1.41] mb-4 w-full z-10 relative">
-                  <Image
-                    className="poster-img object-cover"
-                    loader={posterLoading}
-                    loading="lazy"
-                    src={defaultimg}
-                    alt="defaultimg"
-                  />
+                  <Image className="poster-img object-cover" loader={posterLoading} loading="lazy" src={defaultimg} alt="defaultimg" />
                 </div>
               )}
 
               <div className="">
                 {posterData?.data?.poster[0] ? (
                   <>
-                    <p className="text-center font-bold text-lg">
-                      {posterData?.data?.poster[0]?.title}
-                    </p>
+                    <p className="text-center font-bold text-lg">{posterData?.data?.poster[0]?.title}</p>
                     <p className="text-center text-base">{posterData?.data?.poster[0]?.create}</p>
                     <p className="text-center text-base">{posterData?.data?.poster[0]?.desc}</p>
                   </>

@@ -17,7 +17,7 @@ function LocationSection() {
       viewport={{ once: true, amount: 0.8 }}
       variants={cardVariants}
     >
-      <TitleBox title="مسیرهای دسترسی" />
+      <TitleBox title="مسیرهای دسترسی" margin={true} />
 
       <div className="flex flex-col items-center gap-16">
         <div className="flex flex-col gap-8 z-10">

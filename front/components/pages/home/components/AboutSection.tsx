@@ -12,7 +12,7 @@ function AboutSection() {
       viewport={{ once: true, amount: 0.8 }}
       variants={cardVariants}
     >
-      <TitleBox title="درباره هیئت" />
+      <TitleBox title="درباره هیئت" margin={true} />
       <p className="text-lg text-justify">
         بسم الله الرحمن الرحیم
         <br />

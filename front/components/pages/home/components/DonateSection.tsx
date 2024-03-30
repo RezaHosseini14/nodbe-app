@@ -5,6 +5,7 @@ import { Form, Schema } from "rsuite";
 // components
 import CopyText from "@/components/shared/CopyText";
 import { cardVariants } from "@/utils/constant";
+import TitleBox from "@/components/shared/TitleBox";
 
 export const model = Schema.Model({
   donate: Schema.Types.NumberType("باید عدد باشد").isRequired("مبلغ الزامی است"),
@@ -23,25 +24,16 @@ function DonateSection() {
       viewport={{ once: true, amount: 0.8 }}
       variants={cardVariants}
     >
-      <div className="flex-[2] card sp_card">
-        <Form
-          ref={formRef}
-          fluid
-          model={model}
-          formValue={formValue}
-          onChange={setFormValue}
-          className="flex flex-col justify-between h-full pt-4"
-        >
-          <Form.Group>
-            <Form.ControlLabel
-              className="text-mianColor dark:text-white font-semibold"
-              style={{ fontSize: "1.2rem" }}
-            >
-              مبلغ
-            </Form.ControlLabel>
-            <Form.Control className="h-10 text-lg" name="donate" />
-          </Form.Group>
+      <div className="card sp_card">
+        <TitleBox title="کمک به هیئت" margin={true} />
 
+        <Form ref={formRef} fluid model={model} formValue={formValue} onChange={setFormValue}>
+          <div className="flex items-start gap-4">
+            <Form.Group className="flex-1">
+              <Form.Control className="h-10 text-lg" name="donate" placeholder="مبلغ" />
+            </Form.Group>
+            <span className="mt-2 font-bold text-lg">ریال</span>
+          </div>
           <button className="bg-mianColor hover:bg-mianColor/70 transition w-full h-10 rounded-xl text-white font-bold text-xl cursor-pointer z-10">
             پرداخت آنلاین
           </button>
@@ -49,11 +41,7 @@ function DonateSection() {
       </div>
 
       <CopyText title="شماره کارت:" desc="(به نام حسن دادگسترنیا)" text="6219861038519889" />
-      <CopyText
-        title="شماره شبا:"
-        desc="(به نام حسن دادگسترنیا)"
-        text="IR330620000000202901868005"
-      />
+      <CopyText title="شماره شبا:" desc="(به نام حسن دادگسترنیا)" text="IR330620000000202901868005" />
     </motion.div>
   );
 }

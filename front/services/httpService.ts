@@ -1,11 +1,8 @@
 import axios from "axios";
 
-// export const controller = new AbortController();
-
 const app = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
-  // signal: controller.signal,
 });
 
 const http = {
