@@ -36,6 +36,7 @@ module.exports = class Application {
     // } else {
     //   this.#app.use(cors({ credentials: true, origin: "https://nodbe-front.liara.run" }));
     // }
+
     this.#app.use(cookieParser());
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({ extended: true }));

@@ -109,7 +109,7 @@ export default function UpdateContactPage({ params }: { params: { id: string } }
 
   return (
     <Form ref={formRef} onChange={setFormValue} onCheck={setFormError} formValue={formValue} model={model} className="">
-      <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 grid-cols-2 gap-8 text-base font-medium">
+      <div className="grid xl:grid-cols-3 md:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-8 text-base font-medium">
         <Field name="first_name" label="نام" />
         <Field name="last_name" label="نام خانوادگی" />
         <Field
@@ -119,6 +119,7 @@ export default function UpdateContactPage({ params }: { params: { id: string } }
           data={[
             { label: "ادمین", value: "ADMIN" },
             { label: "کاربر", value: "USER" },
+            { label: "مدیرکل", value: "SUPER" },
           ]}
         />
         <Field name="username" label="نام کاربری" />

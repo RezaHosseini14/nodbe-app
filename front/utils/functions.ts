@@ -15,36 +15,19 @@ export const persianMonthDate = (date: any) => {
 
 export const getRoles = (roles: string[]) => {
   let userRole = "";
-  if (roles[0] == "") {
-    switch (roles[1]) {
-      case "ADMIN":
-        userRole = "مدیر";
-        break;
-      case "USER":
-        userRole = "کاربر عادی";
-        break;
-      case "SUPER":
-        userRole = "مدیرکل";
-        break;
-      default:
-        userRole = "ناشناخته";
-        break;
-    }
-  } else {
-    switch (roles[0]) {
-      case "ADMIN":
-        userRole = "مدیر";
-        break;
-      case "USER":
-        userRole = "اپراتور";
-        break;
-      case "GUEST":
-        userRole = "مهمان";
-        break;
-      default:
-        userRole = "ناشناخته";
-        break;
-    }
+  switch (roles[0]) {
+    case "ADMIN":
+      userRole = "مدیر";
+      break;
+    case "USER":
+      userRole = "کاربر عادی";
+      break;
+    case "SUPER":
+      userRole = "مدیرکل";
+      break;
+    default:
+      userRole = "ناشناخته";
+      break;
   }
   return userRole;
 };

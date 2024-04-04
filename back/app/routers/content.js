@@ -19,10 +19,12 @@ router.get("/contentofmonth", ContentController.contentOfMonth);
 router.get("/allcount", ContentController.allCount);
 router.post("/add", checkLogin, checkAll, checkUserStatus, cpUpload, ContentController.addContent);
 router.get("/allcontentadmin", checkLogin, checkAll, checkUserStatus, ContentController.getAllContentAdmin);
-router.get("/all",checkUserStatus, ContentController.getAllContent);
-router.get("/:id",ContentController.getContent);
+router.get("/all", checkUserStatus, ContentController.getAllContent);
+router.get("/:id", ContentController.getContent);
 router.put("/update/:id", checkLogin, authorize("ADMIN"), checkAll, checkUserStatus, ContentController.updateContent);
 router.delete("/delete/:id", checkLogin, authorize("ADMIN"), checkAll, checkUserStatus, ContentController.deleteContent);
+router.delete("/deleteImage/:id/:imageId", checkLogin, authorize("ADMIN"), checkAll, checkUserStatus, ContentController.deleteContentImage);
+router.delete("/deleteFile/:id/:fileId", checkLogin, authorize("ADMIN"), checkAll, checkUserStatus, ContentController.deleteContentFile);
 
 module.exports = {
   contentRoutes: router,

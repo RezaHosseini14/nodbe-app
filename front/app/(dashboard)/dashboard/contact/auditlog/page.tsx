@@ -8,6 +8,7 @@ import { shamsi } from "@/utils/functions";
 
 //services
 import { allAuditLogs } from "@/services/contact/contactServices";
+import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
 
 const { Column, HeaderCell, Cell } = Table;
 function AuditLogPage() {
@@ -60,9 +61,7 @@ function AuditLogPage() {
 
   return (
     <div>
-      <div className="block mb-4">
-        <h2 className="text-2xl">کاربران</h2>
-      </div>
+      <TabelTitle title="لاگ ها" />
       <Table
         className="rounded-xl"
         height={400}
@@ -73,7 +72,7 @@ function AuditLogPage() {
         bordered={true}
         cellBordered={true}
       >
-        <Column width={70} align="center" fixed>
+        <Column width={70} align="center">
           <HeaderCell align="center">شناسه</HeaderCell>
           <Cell align="center">
             {(rowData, index: number) => <p>{page * limit - limit + index + 1}</p>}

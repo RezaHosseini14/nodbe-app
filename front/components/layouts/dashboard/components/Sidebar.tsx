@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { IoClose } from "react-icons/io5";
 
 //components
 import UsersIcon from "@/components/shared/icons/UsersIcon";
@@ -9,6 +10,8 @@ import ImageIcon from "@/components/shared/icons/ImageIcon";
 import CalenderIcon from "@/components/shared/icons/CalenderIcon";
 import SendIcon from "@/components/shared/icons/SendIcon";
 import HomeIcon from "@/components/shared/icons/HomeIcon";
+import { CHANGE_OPEN_SIDEBAR } from "@/redux/slices/style/sidebarSlice";
+import { useOutsideClick } from "@/hook/useOutsideClick";
 
 type ChildItem = {
   name: string;
@@ -26,7 +29,11 @@ type SidebarItem = {
 };
 
 function Sidebar() {
+  const dispatch = useDispatch();
+
   const { me } = useSelector((state: RootState) => state.auth);
+  const { sidebar } = useSelector((state: RootState) => state.sidebar);
+  const sidebarRef = useRef(null);
 
   const shouldShowItem = (userRoles: string[], requiredRoles: string[]): boolean => {
     return userRoles?.includes("SUPER") || userRoles?.some((role) => requiredRoles.includes(role));
@@ -109,18 +116,27 @@ function Sidebar() {
     },
   ];
 
+  const handleCloseSidebar = () => {
+    dispatch(CHANGE_OPEN_SIDEBAR(false));
+  };
+
+  useOutsideClick(sidebarRef, handleCloseSidebar);
+
   return (
-    <div className="bg-mianColor w-72 h-full rounded-2xl p-6 lg:block hidden transition-all ease-in-out">
-      <div className="light-scroll pl-3 overflow-y-auto w-full h-full lg:flex hidden flex-col gap-3">
+    <div
+      ref={sidebarRef}
+      className={`bg-mianColor w-72 h-full lg:rounded-2xl rounded-none p-6 transition-all ease-in-out lg:static fixed top-0 z-10 ${
+        sidebar ? "right-0 shadow-xl" : "-right-80"
+      }`}
+    >
+      <IoClose onClick={handleCloseSidebar} className="lg:hidden block text-2xl text-white absolute left-2 top-2 cursor-pointer" />
+      <div className="light-scroll pl-3 overflow-y-auto w-full h-full flex flex-col gap-3">
         {sidebarData?.map(
           (item, index) =>
             item.show && (
-              <div
-                key={index}
-                className=" flex flex-col gap-3 border border-white/30 p-2 rounded-lg"
-              >
+              <div key={index} className=" flex flex-col gap-3 border border-white/30 p-2 rounded-lg">
                 <Link
-                  className="text-mianColor hover:text-[rgb(81 109 80)] flex items-center gap-2 text-lg bg-white/70 backdrop-blur-xl rounded-xl h-12 px-4"
+                  className="text-mianColor hover:gray-700 transition flex items-center gap-2 text-lg bg-white/70 backdrop-blur-xl rounded-xl h-12 px-4"
                   href={item.route}
                 >
                   <div className="flex items-center justify-center text-2xl ">{item.icon}</div>
@@ -134,12 +150,10 @@ function Sidebar() {
                       child.show && (
                         <Link
                           key={childIndex}
-                          className="flex items-center gap-2 text-lg text-white bg-white/30 backdrop-blur-xl rounded-xl h-10 px-2 mr-4"
+                          className="flex items-center gap-2 text-lg text-white hover:text-gray-700 transition bg-white/30 backdrop-blur-xl rounded-xl h-10 px-2 mr-4"
                           href={child.route}
                         >
-                          <div className="flex items-center justify-center text-lg ">
-                            {child.icon}
-                          </div>
+                          <div className="flex items-center justify-center text-lg ">{child.icon}</div>
                           {child.name}
                         </Link>
                       )

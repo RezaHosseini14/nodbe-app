@@ -13,8 +13,12 @@ import LocationSection from "@/components/pages/home/components/LocationSection"
 import AboutSection from "@/components/pages/home/components/AboutSection";
 import MediaSection from "@/components/pages/home/components/MediaSection";
 import BubbleBlur from "@/components/shared/BubbleBlur";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const Home = () => {
+  const { theme } = useSelector((state: RootState) => state.theme);
+
   const { data: posterData, isLoading: posterLoading } = useQuery({
     queryKey: ["lastposter"],
     queryFn: lastPoster,
@@ -22,7 +26,7 @@ const Home = () => {
 
   return (
     <PageLoading loading={posterLoading}>
-      <BubbleBlur />
+      {theme && <BubbleBlur />}
 
       <div className="h-full relative">
         <div className="grid lg:grid-cols-12 grid-cols-8 gap-8">

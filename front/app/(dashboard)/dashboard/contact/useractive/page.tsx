@@ -5,15 +5,14 @@ import { Table } from "rsuite";
 import { bestUser } from "@/services/contact/contactServices";
 //functions
 import { shamsi } from "@/utils/functions";
+import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
 
 const { Column, HeaderCell, Cell } = Table;
 function UserActivity() {
   const { data, isLoading } = useQuery({ queryFn: bestUser });
   return (
     <div>
-      <div className="block mb-4 border-b-mianColor">
-        <h2 className="text-2xl font-bold">کاربران بر اساس عملکرد</h2>
-      </div>
+      <TabelTitle title="فعالیت کاربران" />
       <Table
         className="rounded-xl"
         height={400}
@@ -24,7 +23,7 @@ function UserActivity() {
         bordered={true}
         cellBordered={true}
       >
-        <Column width={70} align="center" fixed>
+        <Column width={70} align="center">
           <HeaderCell align="center">شناسه</HeaderCell>
           <Cell align="center">{(rowData, index: number) => <p>{index + 1}</p>}</Cell>
         </Column>

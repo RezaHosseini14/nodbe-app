@@ -30,7 +30,7 @@ function ContentSlider() {
       >
         {isLoading ? (
           <div className="h-full w-full flex items-center justify-center">
-            <Loading />
+            <Loading customColor="var(--mianColorDark)" />
           </div>
         ) : (
           <>

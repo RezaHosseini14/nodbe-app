@@ -58,7 +58,7 @@ function CreateEvent() {
       formValue={formValue}
       model={model}
     >
-      <div className="grid xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 text-lg">
+      <div className="grid xl:grid-cols-3 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-8 text-lg">
         <Field name="title" label="عنوان مناسبت" />
         <Field name="sort" accepter={InputNumber} label="چیدمان مناسبت" />
         <Field

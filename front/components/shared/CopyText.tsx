@@ -16,14 +16,14 @@ function CopyText({ title, desc, text }: { title: string; desc: string; text: st
   return (
     <div className="card sp_card flex-1 flex items-center justify-center gap-8">
       <div className="flex flex-col gap-2 w-full">
-        <h1 className="font-bold text-2xl">{title}</h1>
+        <h1 className="font-bold text-2xl dark:text-white text-mianColor">{title}</h1>
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 dark:text-white text-mianColor">
             <span className="font-bold text-lg">{staticContent}</span>
             <span className="font-bold text-xs">{desc}</span>
           </div>
           <CopyToClipboard text={staticContent} onCopy={handleCopy}>
-            <button className="text-2xl" disabled={copied}>
+            <button className="text-2xl dark:text-white text-mianColor " disabled={copied}>
               {copied ? <IoCopy /> : <IoCopyOutline />}
             </button>
           </CopyToClipboard>

@@ -16,26 +16,26 @@ function SocialSection() {
   const socialMedia: ISocialMedia[] = [
     {
       social: "بله",
-      link: "/",
+      link: "https://ble.ir/nodbeh_info",
       message: "عضویت در پیامرسان بله",
       icon: <BaleIcon />,
     },
     ,
     {
       social: "آپارات",
-      link: "/",
+      link: "https://www.aparat.com/nodbe_info",
       message: "عضویت در پیامرسان آپارات",
       icon: <SiAparat />,
     },
     {
       social: "اینستاگرام",
-      link: "/",
+      link: "https://www.instagram.com/nodbe_info",
       message: "عضویت در پیامرسان اینستاگرام",
       icon: <IoLogoInstagram />,
     },
     {
       social: "تلگرام",
-      link: "/",
+      link: "https://t.me/nodbe_info",
       message: "عضویت در پیامرسان تلگرام",
       icon: <FaTelegramPlane />,
     },

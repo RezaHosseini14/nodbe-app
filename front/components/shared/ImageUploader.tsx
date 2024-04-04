@@ -7,9 +7,6 @@ interface ImageUploaderProps {
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({ imageList }) => {
   const [images, setImages] = useState<File[]>([]);
-  console.log(images);
-  console.log(imageList);
-  
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newImages = e.target.files;
@@ -32,7 +29,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ imageList }) => {
   };
 
   return (
-    <div className="xl:col-span-3 lg:col-span-4 md:col-span-3 col-span-2">
+    <div className="xl:col-span-3 lg:col-span-4 md:col-span-3 xs:col-span-2">
       <div className="relative w-full h-28 bg-white rounded-2xl border-dashed border-mianColor border-2">
         <input
           className="opacity-0 absolute right-0 top-0 w-full h-full cursor-pointer"

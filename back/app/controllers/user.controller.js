@@ -31,7 +31,7 @@ class UserController {
       const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
       const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
       const skip = (page - 1) * limit;
-      const totalContents = await UserModel.countDocuments();
+      const totalUsers = await UserModel.countDocuments();
 
       const users = await UserModel.find().skip(skip).limit(limit);
       if (!users) throw { status: 404, success: false, message: "کاربری یافت نشد" };
@@ -41,8 +41,8 @@ class UserController {
         success: true,
         users,
         currentPage: page,
-        totalPages: Math.ceil(totalContents / limit),
-        total: totalContents,
+        totalPages: Math.ceil(totalUsers / limit),
+        total: totalUsers,
       });
     } catch (err) {
       next(err);

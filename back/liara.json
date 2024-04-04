@@ -1,0 +1,11 @@
+{
+  "platform": "node",
+  "app": "nodbe-app",
+  "port": 3000,
+  "disks": [
+    {
+      "name": "uploads",
+      "mountTo": "public/uploads/"
+    }
+  ]
+}

@@ -32,9 +32,9 @@ function DonateSection() {
             <Form.Group className="flex-1">
               <Form.Control className="h-10 text-lg" name="donate" placeholder="مبلغ" />
             </Form.Group>
-            <span className="mt-2 font-bold text-lg">ریال</span>
+            <span className="mt-2 font-bold text-lg dark:text-white text-mianColor">ریال</span>
           </div>
-          <button className="bg-mianColor hover:bg-mianColor/70 transition w-full h-10 rounded-xl text-white font-bold text-xl cursor-pointer z-10">
+          <button className="dark:bg-mianColorDark bg-mianColor hover:bg-mianColor/70 transition w-full h-10 rounded-xl text-white font-bold text-xl cursor-pointer z-10">
             پرداخت آنلاین
           </button>
         </Form>

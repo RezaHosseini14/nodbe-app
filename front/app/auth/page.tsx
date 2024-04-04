@@ -41,7 +41,7 @@ function AuthPage() {
 
   return (
     <div className="w-full h-screen flex justify-center items-center bg-mianColor/50">
-      <div className="relative w-96 h-96 p-8 border border-mianColor rounded-xl shadow-xl bg-white/50 backdrop-blur-xl">
+      <div className="relative sm:w-96 w-full sm:mx-0 mx-8 h-96 p-8 border border-mianColor rounded-xl shadow-xl bg-white/50 backdrop-blur-xl">
         <h1 className="absolute right-1/2 translate-x-1/2 -top-6 text-[2rem] rounded-xl shadow-md bg-mianColor text-white px-9">ورود</h1>
         {!isLoading ? (
           <Form ref={formRef} fluid model={model} formValue={formValue} onChange={setFormValue} className="flex flex-col justify-between h-full pt-4">

@@ -4,9 +4,6 @@ import { cookies } from "next/headers";
 export default async function middleware(req: NextRequest) {
   const url = req.url;
   const cookieStore = cookies();
-
-  console.log(cookieStore.getAll());
-
   let accessToken = req.cookies.getAll();
 
   // let refreshToken = req.cookies.get("refreshToken");

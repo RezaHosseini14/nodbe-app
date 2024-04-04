@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 
 //icons
-import { IoCreateOutline, IoTrashOutline } from "react-icons/io5";
+import { IoCreateOutline, IoTrashOutline, IoPersonAdd } from "react-icons/io5";
 
 //components
 import ConfirmModal from "@/components/shared/ConfirmModal";
@@ -14,9 +14,15 @@ import { allUser, blockUser, deleteUser } from "@/services/contact/contactServic
 
 //functions
 import { getRoles, shamsi } from "@/utils/functions";
+import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import useRoleCheck from "@/hook/useRoleCheck";
 
 const { Column, HeaderCell, Cell } = Table;
 function ContactPage() {
+  const { me } = useSelector((state: RootState) => state.auth);
+
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
   const [open, setOpen] = useState<boolean>(false);
@@ -37,19 +43,17 @@ function ContactPage() {
     setLimit(dataKey);
   };
 
-  const { data, isLoading, refetch } = useQuery(
-    ["allUser", page, limit],
-    () => allUser(page, limit),
-    {
-      keepPreviousData: true,
-    }
-  );
+  const { data, isLoading, refetch } = useQuery(["allUser", page, limit], () => allUser(page, limit), {
+    keepPreviousData: true,
+  });
 
   const { mutateAsync } = useMutation({ mutationFn: deleteUser });
 
   const { mutateAsync: mutateAsyncBlock } = useMutation({
     mutationFn: blockUser,
   });
+
+  const { checkRole } = useRoleCheck(me?.roles, "SUPER");
 
   const removeUserHandler = async (id: string) => {
     try {
@@ -77,9 +81,18 @@ function ContactPage() {
 
   return (
     <div className="h-full">
-      <div className="block mb-4">
-        <h2 className="text-2xl">کاربران</h2>
-      </div>
+      <TabelTitle
+        title="کاربران"
+        buttons={[
+          {
+            url: "/dashboard/contact/create",
+            title: "ایجاد کاربر",
+            icon: <IoPersonAdd />,
+            bg: "bg-mianColor hover:bg-mianColor/70",
+            color: "text-white",
+          },
+        ]}
+      />
       <Table
         className="rounded-xl h-full"
         data={data?.data?.users}
@@ -89,9 +102,9 @@ function ContactPage() {
         bordered={true}
         cellBordered={true}
       >
-        <Column flexGrow={1} align="center" fixed>
-          <HeaderCell>شناسه</HeaderCell>
-          <Cell dataKey="_id" />
+        <Column width={70} align="center">
+          <HeaderCell align="center">شناسه</HeaderCell>
+          <Cell align="center">{(rowData, index: number) => <p>{page * limit - limit + index + 1}</p>}</Cell>
         </Column>
 
         <Column width={150}>
@@ -108,6 +121,13 @@ function ContactPage() {
           <HeaderCell align="center">نام کاربری</HeaderCell>
           <Cell align="center" dataKey="username" />
         </Column>
+
+        {checkRole() && (
+          <Column width={100}>
+            <HeaderCell align="center">رمز عبور</HeaderCell>
+            <Cell align="center" dataKey="" />
+          </Column>
+        )}
 
         <Column flexGrow={1}>
           <HeaderCell align="center">زمان عضویت</HeaderCell>
@@ -138,7 +158,7 @@ function ContactPage() {
           </Cell>
         </Column>
 
-        <Column width={80} fixed="right">
+        <Column width={80}>
           <HeaderCell>...</HeaderCell>
 
           <Cell align="center">
@@ -175,13 +195,7 @@ function ContactPage() {
           onChangeLimit={handleChangeLimit}
         />
       </div>
-      <ConfirmModal
-        message="کاربر حذف شود ؟"
-        open={open}
-        handleClose={handleClose}
-        apiFunc={removeUserHandler}
-        id={rowDataId}
-      />
+      <ConfirmModal message="کاربر حذف شود ؟" open={open} handleClose={handleClose} apiFunc={removeUserHandler} id={rowDataId} />
     </div>
   );
 }

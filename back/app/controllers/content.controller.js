@@ -1,6 +1,8 @@
 const { ContentModel } = require("../models/content");
 const { contentValidator } = require("../validators/content");
 const path = require("path");
+const fs = require("fs");
+
 const { listOfImages, mamad } = require("../utils/functions");
 const { UserModel } = require("../models/user");
 
@@ -90,10 +92,7 @@ class ContentController {
         query.event = slug;
       }
 
-      const contents = await ContentModel.find(query)
-        .sort({ publishTime: -1, create: -1 })
-        .skip(skip)
-        .limit(limit);
+      const contents = await ContentModel.find(query).sort({ publishTime: -1, create: -1 }).skip(skip).limit(limit);
 
       if (!contents || contents.length === 0) {
         throw { status: 404, success: false, message: "محتوایی یافت نشد" };
@@ -160,13 +159,106 @@ class ContentController {
           message: "محتوا مورد نظر یافت نشد",
         };
 
+      // حذف تمامی تصاویر مرتبط با محتوا
+      for (const image of content.images) {
+        const imagePath = path.join(__dirname, "../../public", image.url);
+        fs.unlinkSync(imagePath);
+      }
+
+      // حذف تمامی فایل‌های مرتبط با محتوا
+      for (const file of content.files) {
+        const filePath = path.join(__dirname, "../../public", file.url);
+        fs.unlinkSync(filePath);
+      }
+
       const deletecontent = await ContentModel.deleteOne({ _id: id });
-      if (deletecontent.deletedCount == 0)
-        throw { status: 400, success: false, message: "محتوا حذف نشد" };
+      if (deletecontent.deletedCount == 0) throw { status: 400, success: false, message: "محتوا حذف نشد" };
       return res.status(202).json({
         status: 202,
         success: true,
         message: "محتوا با موفقیت حذف شد",
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async deleteContentImage(req, res, next) {
+    try {
+      const { id, imageId } = req.params;
+      const content = await ContentModel.findOne({ _id: id });
+      if (!content) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "محتوا مورد نظر یافت نشد",
+        });
+      }
+
+      const imageToDelete = content.images.find((image) => image._id.toString() === imageId);
+      if (!imageToDelete) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "تصویر مورد نظر یافت نشد",
+        });
+      }
+
+      const imagePath = path.join(__dirname, "../../public", imageToDelete.url);
+      fs.unlinkSync(imagePath);
+
+      const filteredImages = content.images.filter((item) => item._id.toString() !== imageId);
+
+      content.images = filteredImages;
+
+      await content.save();
+
+      return res.status(202).json({
+        status: 202,
+        success: true,
+        message: "تصویر با موفقیت حذف شد",
+        content,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async deleteContentFile(req, res, next) {
+    try {
+      const { id, fileId } = req.params;
+      const content = await ContentModel.findOne({ _id: id });
+      if (!content) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "محتوا مورد نظر یافت نشد",
+        });
+      }
+
+      const fileToDelete = content.files.find((file) => file._id.toString() === fileId);
+      if (!fileToDelete) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "فایل مورد نظر یافت نشد",
+        });
+      }
+
+      const filePath = path.join(__dirname, "../../public", fileToDelete.url);
+      fs.unlinkSync(filePath);
+
+      const filteredfiles = content.files.filter((item) => item._id.toString() !== fileId);
+
+      content.files = filteredfiles;
+
+      await content.save();
+
+      return res.status(202).json({
+        status: 202,
+        success: true,
+        message: "فایل با موفقیت حذف شد",
+        content,
       });
     } catch (err) {
       next(err);
@@ -189,8 +281,7 @@ class ContentController {
 
       const updateContent = await ContentModel.updateOne({ _id: id }, { $set: data });
 
-      if (updateContent.modifiedCount == 0)
-        throw { status: 400, success: false, message: "به روزرسانی انجام نشد" };
+      if (updateContent.modifiedCount == 0) throw { status: 400, success: false, message: "به روزرسانی انجام نشد" };
 
       return res.status(200).json({
         status: 200,

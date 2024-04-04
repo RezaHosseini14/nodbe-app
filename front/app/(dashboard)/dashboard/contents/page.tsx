@@ -12,6 +12,7 @@ import { allContentAdmin, deleteContent } from "@/services/content/contentServic
 import { shamsi } from "@/utils/functions";
 import { useState } from "react";
 import ConfirmModal from "@/components/shared/ConfirmModal";
+import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
 
 const { Column, HeaderCell, Cell } = Table;
 function ContentPage() {
@@ -26,13 +27,9 @@ function ContentPage() {
   };
 
   //get all content for admin
-  const { data, isLoading, refetch } = useQuery(
-    ["content", page, limit],
-    () => allContentAdmin(page, limit),
-    {
-      keepPreviousData: true,
-    }
-  );
+  const { data, isLoading, refetch } = useQuery(["content", page, limit], () => allContentAdmin(page, limit), {
+    keepPreviousData: true,
+  });
 
   //remove content
   const { mutateAsync } = useMutation({ mutationFn: deleteContent });
@@ -61,9 +58,18 @@ function ContentPage() {
 
   return (
     <div>
-      <div className="block mb-4">
-        <h2 className="text-2xl">محتوا ها</h2>
-      </div>
+      <TabelTitle
+        title="محتوا ها"
+        buttons={[
+          {
+            url: "/dashboard/contents/create",
+            title: "ایجاد محتوا",
+            bg: "bg-mianColor hover:bg-mianColor/70",
+            color: "text-white",
+          },
+        ]}
+      />
+
       <Table
         className="rounded-xl"
         height={400}
@@ -74,11 +80,9 @@ function ContentPage() {
         bordered={true}
         cellBordered={true}
       >
-        <Column width={70} align="center" fixed>
+        <Column width={70} align="center">
           <HeaderCell align="center">شناسه</HeaderCell>
-          <Cell align="center">
-            {(rowData, index) => <p>{page * limit - limit + index + 1}</p>}
-          </Cell>
+          <Cell align="center">{(rowData, index) => <p>{page * limit - limit + index + 1}</p>}</Cell>
         </Column>
 
         <Column flexGrow={1}>
@@ -184,13 +188,7 @@ function ContentPage() {
           onChangeLimit={handleChangeLimit}
         />
       </div>
-      <ConfirmModal
-        message="مراسم حذف شود ؟"
-        open={open}
-        handleClose={handleClose}
-        apiFunc={removeContentHandler}
-        id={rowDataId}
-      />
+      <ConfirmModal message="مراسم حذف شود ؟" open={open} handleClose={handleClose} apiFunc={removeContentHandler} id={rowDataId} />
     </div>
   );
 }

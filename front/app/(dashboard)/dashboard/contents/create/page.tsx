@@ -135,7 +135,7 @@ function CreateContent() {
       model={model}
       className="flex flex-col justify-between h-full"
     >
-      <div className="grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 text-base font-medium">
+      <div className="grid xl:grid-cols-6 lg:grid-cols-4 md:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-8 text-base font-medium">
         <Field
           accepter={SelectPicker}
           name="event"
@@ -148,14 +148,7 @@ function CreateContent() {
 
         <div className="flex flex-col">
           <label htmlFor="create">زمان برگذاری</label>
-          <DatePicker
-            style={{ width: "100%" }}
-            name="create"
-            value={createValue}
-            onChange={setCreateValue}
-            calendar={persian}
-            locale={persian_fa}
-          />
+          <DatePicker style={{ width: "100%" }} name="create" value={createValue} onChange={setCreateValue} calendar={persian} locale={persian_fa} />
         </div>
 
         <div className="flex flex-col">
@@ -176,7 +169,7 @@ function CreateContent() {
 
         <Field accepter={Toggle} name="show" label="قابل رویت" />
 
-        <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 col-span-2">
+        <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 xs:col-span-2">
           <Form.ControlLabel className="text-xl font-bold mb-4">تصاویر مراسم</Form.ControlLabel>
 
           <Uploader
@@ -194,18 +187,9 @@ function CreateContent() {
           </Uploader>
         </Form.Group>
 
-        <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 col-span-2">
-          <Form.ControlLabel className="text-xl font-bold mb-4">
-            فایل ها صوتی و تصویری
-          </Form.ControlLabel>
-          <Uploader
-            fileList={fileList}
-            autoUpload={false}
-            onChange={handleFileChange}
-            draggable
-            multiple
-            accept="audio/mp3"
-          >
+        <Form.Group className="xl:col-span-3 lg:col-span-4 md:col-span-3 xs:col-span-2">
+          <Form.ControlLabel className="text-xl font-bold mb-4">فایل ها صوتی و تصویری</Form.ControlLabel>
+          <Uploader fileList={fileList} autoUpload={false} onChange={handleFileChange} draggable multiple accept="audio/mp3">
             <div style={uploaderStyle}>
               <span>فایل مورد نظر را انتخاب کنید</span>
             </div>
@@ -222,11 +206,7 @@ function CreateContent() {
                 />
               </div>
               <div className="col-span-1">
-                <Field
-                  name={`audioDesc${index}`}
-                  label="توضیحات صوت"
-                  onChange={(value) => handleAudioDetails(index, value, "audioDesc")}
-                />
+                <Field name={`audioDesc${index}`} label="توضیحات صوت" onChange={(value) => handleAudioDetails(index, value, "audioDesc")} />
               </div>
             </div>
           ))}

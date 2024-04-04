@@ -14,6 +14,9 @@ import SubmitBtn from "@/components/shared/SubmitBtn";
 //services
 import { addUserFull } from "@/services/contact/contactServices";
 import Field from "@/components/shared/Field";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import useRoleCheck from "@/hook/useRoleCheck";
 
 type CreateUserFormValue = {
   first_name: string;
@@ -26,6 +29,7 @@ type CreateUserFormValue = {
 };
 
 function CreateContactPage() {
+  const { me } = useSelector((state: RootState) => state.auth);
   const formRef = useRef<any>();
   const [formError, setFormError] = useState<any>({});
   const [formValue, setFormValue] = useState<CreateUserFormValue>({
@@ -81,28 +85,25 @@ function CreateContactPage() {
     }));
   };
 
-  return (
-    <Form
-      ref={formRef}
-      onChange={setFormValue}
-      onCheck={setFormError}
-      formValue={formValue}
-      model={model}
-      className=""
-    >
-      <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 grid-cols-2 gap-8 text-base font-medium">
-        <Field name="first_name" label="نام" />
-        <Field
-          name="roles"
-          label="نقش"
-          accepter={CheckPicker}
-          data={[
-            { label: "ادمین", value: "ADMIN" },
-            { label: "کاربر", value: "USER" },
-          ]}
-        />
+  const { checkRole } = useRoleCheck(me?.roles, "SUPER");
 
+  const rolesList = checkRole()
+    ? [
+        { label: "مدیر", value: "ADMIN" },
+        { label: "کاربر", value: "USER" },
+        { label: "مدیرکل", value: "SUPER" },
+      ]
+    : [
+        { label: "مدیر", value: "ADMIN" },
+        { label: "کاربر", value: "USER" },
+      ];
+
+  return (
+    <Form ref={formRef} onChange={setFormValue} onCheck={setFormError} formValue={formValue} model={model} className="">
+      <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 text-base font-medium">
+        <Field name="first_name" label="نام" />
         <Field name="last_name" label="نام خانوادگی" />
+        <Field name="roles" label="نقش" accepter={CheckPicker} data={rolesList} />
         <Field name="username" label="نام کاربری" />
         <Field name="password" type="password" autoComplete="off" label="رمز عبور" />
         <Field name="confirmPassword" type="password" autoComplete="off" label="تکرار رمز عبور" />

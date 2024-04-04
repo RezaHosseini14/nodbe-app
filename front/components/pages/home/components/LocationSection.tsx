@@ -22,36 +22,34 @@ function LocationSection() {
       <div className="flex flex-col items-center gap-16">
         <div className="flex flex-col gap-8 z-10">
           <div className="flex flex-col items-start gap-2">
-            <div className="flex items-center justify-center gap-1 bg-mianColorDark rounded-lg px-4 py-1">
-              <div className="text-2xl">
-                <LiaTrainSolid />
-              </div>
-              <p className="text-lg">مترو</p>
-            </div>
-            <p className="text-base">
-              ایستگاه مترو دانشگاه شریف بلوار تیموری کوچه گلنار مدرسه هدایت میزان
-            </p>
-          </div>
-
-          <div className="flex flex-col items-start gap-2">
-            <div className="flex items-center justify-center gap-1 bg-mianColorDark rounded-lg px-4 py-1">
+            <div className="flex items-center justify-center gap-1 dark:bg-mianColorDark bg-mianColor rounded-lg px-2 py-1 text-white">
               <div className="text-2xl">
                 <SlLocationPin />
               </div>
               <p className="text-lg">آدرس</p>
             </div>
-            <p className="text-base">
-              ایستگاه مترو دانشگاه شریف بلوار تیموری کوچه گلنار مدرسه هدایت میزان
-            </p>
+            <p className="text-base">ایستگاه مترو دانشگاه شریف ، بلوار تیموری ، کوچه گلنار ، مدرسه هدایت میزان</p>
+          </div>
+
+          <div className="flex flex-col items-start gap-2">
+            <div className="flex items-center justify-center gap-1 dark:bg-mianColorDark bg-mianColor rounded-lg px-2 py-1 text-white">
+              <div className="text-2xl">
+                <LiaTrainSolid />
+              </div>
+              <p className="text-lg">مترو</p>
+            </div>
+            <p className="text-base">ایستگاه مترو دانشگاه شریف ، بلوار تیموری ، کوچه گلنار ، مدرسه هدایت میزان</p>
           </div>
         </div>
 
-        <Link
-          href="https://nshn.ir/ad_bvHbNVxMwwR"
-          className="dark:bg-mianColorDark rounded-xl w-full px-8 py-2 font-bold text-xl block text-center z-50"
-        >
-          مسیریابی
-        </Link>
+        <div className="w-full text-white">
+          <Link
+            href="https://nshn.ir/ad_bvHbNVxMwwR"
+            className=" dark:bg-mianColorDark bg-mianColor rounded-xl w-full px-8 py-2 font-bold text-xl block text-center z-50"
+          >
+            مسیریابی
+          </Link>
+        </div>
       </div>
     </motion.div>
   );

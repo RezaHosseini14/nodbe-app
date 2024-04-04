@@ -15,8 +15,9 @@ import CalenderIcon from "@/components/shared/icons/CalenderIcon";
 function DashboardPage() {
   const { data, isLoading } = useQuery({ queryKey: ["allcount"], queryFn: allCount });
   const date = new Date().toLocaleDateString("fa-IR");
+  
   return (
-    <div className="grid grid-cols-12 grid-rows-12 gap-8 h-full">
+    <div className="sm:grid flex flex-col md:grid-cols-12 grid-cols-2 md:grid-rows-12 gap-8 sm:h-full">
       <DashboardCard
         loading={isLoading}
         data={data?.data?.allCount?.contentCount}
@@ -40,11 +41,11 @@ function DashboardPage() {
 
       <DashboardCard loading={isLoading} data={date} icon={<CalenderIcon />} title="تاریخ :" />
 
-      <div className="xl:col-span-8 col-span-12 xl:row-span-9 lg:row-span-9 md:row-span-3 lex items-start shadow-lg rounded-xl border px-6 py-4 font-bold text-lg flex-col gap-4">
+      <div className="xl:col-span-8 col-span-12 xl:row-span-9 lg:row-span-9 md:row-span-3 md:h-full h-96 lex items-start shadow-lg rounded-xl border px-6 py-4 font-bold text-lg flex-col gap-4">
         <ContentsChart />
       </div>
 
-      <div className="xl:col-span-4 col-span-12 xl:row-span-9 lg:row-span-9 md:row-span-3 flex items-start shadow-lg rounded-xl border px-6 py-4 font-bold text-lg flex-col gap-4">
+      <div className="xl:col-span-4 col-span-12 xl:row-span-9 lg:row-span-9 md:row-span-3 md:h-full h-96 flex items-start shadow-lg rounded-xl border px-6 py-4 font-bold text-lg flex-col gap-4">
         <UserContentChart />
       </div>
     </div>

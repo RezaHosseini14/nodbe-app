@@ -4,8 +4,8 @@ import { Toaster } from "react-hot-toast";
 import Providers from "./Providers";
 import ReduxProvider from "./ReduxProvider";
 
-import "rsuite/dist/rsuite-rtl.min.css";
 import "./globals.css";
+import "rsuite/dist/rsuite-rtl.min.css";
 import "../assets/css/style.css";
 
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="">
         <Toaster />
         <ReduxProvider>
-            <Providers>{children}</Providers>
+          <Providers>{children}</Providers>
         </ReduxProvider>
       </body>
     </html>
