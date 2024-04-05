@@ -13,16 +13,14 @@ import NotFoundData from "@/components/shared/NotFoundData";
 
 //services
 import { allEvents, deleteEvent } from "@/services/events/eventsServices";
+import TrashIcon from "@/components/shared/icons/TrashIcon";
+import EditIcon from "@/components/shared/icons/EditIcon";
+import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
 
 function EventsPage() {
   const { data, isLoading, refetch } = useQuery({ queryFn: allEvents });
 
-  const {
-    data: deleteEventData,
-    error: deleteEventError,
-    isLoading: deleteEventIsLoading,
-    mutateAsync,
-  } = useMutation({ mutationFn: deleteEvent });
+  const { data: deleteEventData, error: deleteEventError, isLoading: deleteEventIsLoading, mutateAsync } = useMutation({ mutationFn: deleteEvent });
 
   const removeEventHandler = async (id: string) => {
     try {
@@ -41,36 +39,28 @@ function EventsPage() {
       {isLoading ? (
         <Loading />
       ) : (
-        <NotFoundData
-          data={data?.data?.events}
-          message={"مناسبتی"}
-          messageClass="font-bold text-lg text-gray-400"
-        >
+        <NotFoundData data={data?.data?.events} message={"مناسبتی"} messageClass="font-bold text-lg text-gray-400">
           <div className="flex flex-col gap-4">
+            <TabelTitle title="مناسبت ها" />
+
             {data?.data?.events
               .filter((item: any) => item.parent_id === null)
               .map((event: any, index: number) => (
-                <li
-                  key={index}
-                  className="flex flex-col gap-4 border border-slate-400 p-2 rounded-xl"
-                >
-                  <div className="flex items-center justify-between bg-slate-300 px-4 py-3 font-bold rounded-md">
+                <li key={index} className="flex flex-col gap-4 border border-mianColor p-2 rounded-xl">
+                  <div className="flex items-center justify-between bg-mianColor text-white px-4 py-3 font-bold rounded-md">
                     <div>{event.title}</div>
                     <div className="flex items-center gap-4">
-                      <Link
-                        href={`/dashboard/event/update/${event._id}`}
-                        className="inline-flex text-blue-600 hover:text-blue-800 transition"
-                      >
-                        <i className="iconly-Edit-Square icli"></i>
+                      <Link href={`/dashboard/event/update/${event._id}`} className="inline-flex text-blue-600 hover:text-blue-800 transition">
+                        <EditIcon mode={true} />
                       </Link>
                       <Link
                         href={``}
                         onClick={() => {
                           removeEventHandler(event._id);
                         }}
-                        className="inline-flex text-red-600 hover:text-red-800 transition"
+                        className="inline-flex text-red-600 hover:text-red-800 text-lg transition"
                       >
-                        <IoTrashOutline className="text-red-500 text-lg" />
+                        <TrashIcon mode={true} />
                       </Link>
                     </div>
                   </div>
@@ -78,10 +68,7 @@ function EventsPage() {
                     {data?.data?.events
                       .filter((item: any) => item.parent_id === event._id)
                       .map((childItem: any, index: number) => (
-                        <li
-                          key={index}
-                          className="flex items-center justify-between w-full bg-slate-200 px-4 py-2 rounded-md"
-                        >
+                        <li key={index} className="flex items-center justify-between w-full bg-mianColor/20 px-4 py-2 rounded-md">
                           <span key={childItem._id}>{childItem.title}</span>
 
                           <div className="flex items-center gap-4">
@@ -89,16 +76,16 @@ function EventsPage() {
                               href={`/dashboard/event/update/${childItem._id}`}
                               className="inline-flex text-left text-blue-600 hover:text-blue-800 transition"
                             >
-                              <i className="iconly-Edit-Square icli"></i>
+                              <EditIcon mode={true} />
                             </Link>
                             <Link
                               href={``}
                               onClick={() => {
                                 removeEventHandler(childItem._id);
                               }}
-                              className="inline-flex text-left text-red-600 hover:text-red-800 transition"
+                              className="inline-flex text-red-600 hover:text-red-800 text-lg transition"
                             >
-                              <IoTrashOutline className="text-red-500 text-lg" />
+                              <TrashIcon mode={true} />
                             </Link>
                           </div>
                         </li>

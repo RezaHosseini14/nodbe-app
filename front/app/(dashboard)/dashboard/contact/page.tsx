@@ -18,6 +18,8 @@ import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import useRoleCheck from "@/hook/useRoleCheck";
+import EditIcon from "@/components/shared/icons/EditIcon";
+import TrashIcon from "@/components/shared/icons/TrashIcon";
 
 const { Column, HeaderCell, Cell } = Table;
 function ContactPage() {
@@ -164,12 +166,12 @@ function ContactPage() {
           <Cell align="center">
             {(rowData) => (
               <div className="flex items-center gap-4">
-                <Link href={`/dashboard/contact/update/${rowData._id}`}>
-                  <IoCreateOutline className="text-blue-500 text-lg" />
+                <Link className=" text-blue-500 text-lg transition" href={`/dashboard/contact/update/${rowData._id}`}>
+                  <EditIcon mode={true} />
                 </Link>
 
-                <Link href={``} onClick={() => handleOpen(rowData._id)}>
-                  <IoTrashOutline className="text-red-500 text-lg" />
+                <Link className="text-red-500 text-lg transition" href={``} onClick={() => handleOpen(rowData._id)}>
+                  <TrashIcon mode={true} />
                 </Link>
               </div>
             )}

@@ -1,18 +1,22 @@
 "use client";
+import { useState } from "react";
 import { Pagination, Table } from "rsuite";
 import { useMutation, useQuery } from "react-query";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { shamsi } from "@/utils/functions";
 
 //icons
-import { IoEyeOutline, IoTrashOutline, IoCreateOutline } from "react-icons/io5";
+import TrashIcon from "@/components/shared/icons/TrashIcon";
+import EditIcon from "@/components/shared/icons/EditIcon";
+import EyeIcon from "@/components/shared/icons/EyeIcon";
 
-//services
-import { allContentAdmin, deleteContent } from "@/services/content/contentServices";
-import { shamsi } from "@/utils/functions";
-import { useState } from "react";
+//components
 import ConfirmModal from "@/components/shared/ConfirmModal";
 import TabelTitle from "@/components/pages/dashboard/components/TabelTitle";
+
+//services
+import { allContentAdmin, changeShowContent, deleteContent } from "@/services/content/contentServices";
 
 const { Column, HeaderCell, Cell } = Table;
 function ContentPage() {
@@ -34,10 +38,26 @@ function ContentPage() {
   //remove content
   const { mutateAsync } = useMutation({ mutationFn: deleteContent });
 
+  const { mutateAsync: mutateAsyncShowContent } = useMutation({
+    mutationFn: changeShowContent,
+  });
+
   const removeContentHandler = async (id: string) => {
     try {
       const res = await mutateAsync(id);
       if (res?.status == 202) {
+        refetch();
+        toast.success(res?.data?.message);
+      }
+    } catch (error: any) {
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
+  const changeShowContentHandler = async (id: string) => {
+    try {
+      const res = await mutateAsyncShowContent(id);
+      if (res?.status == 200) {
         refetch();
         toast.success(res?.data?.message);
       }
@@ -109,7 +129,7 @@ function ContentPage() {
           <HeaderCell align="center">نمایش</HeaderCell>
           <Cell align="center" verticalAlign="middle">
             {(rowData) => (
-              <div className="">
+              <div className="cursor-pointer" onClick={() => changeShowContentHandler(rowData._id)}>
                 {rowData.show ? (
                   <div className="bg-green-100 border border-green-600 text-green-600 font-medium px-4 py-1 rounded-xl w-24 text-center text-xs">
                     نمایش
@@ -154,14 +174,14 @@ function ContentPage() {
           <Cell align="center">
             {(rowData) => (
               <div className="flex items-center gap-4">
-                <Link href={`/dashboard/contents/update/${rowData._id}`}>
-                  <IoCreateOutline className="text-blue-500 text-lg" />
+                <Link className="text-blue-500 text-lg" href={`/dashboard/contents/update/${rowData._id}`}>
+                  <EditIcon mode={true} />
                 </Link>
-                <Link href={`/content/${rowData._id}`}>
-                  <IoEyeOutline className="text-blue-500 text-lg" />
+                <Link className="text-blue-500 text-lg" href={`/content/${rowData._id}`}>
+                  <EyeIcon mode={true} />
                 </Link>
-                <Link href={``} onClick={() => handleOpen(rowData._id)}>
-                  <IoTrashOutline className="text-red-500 text-lg" />
+                <Link className="text-red-500 text-lg" href={``} onClick={() => handleOpen(rowData._id)}>
+                  <TrashIcon mode={true} />
                 </Link>
               </div>
             )}

@@ -71,11 +71,12 @@ class ContentController {
 
       //query
       const { slug, year } = req.query;
-      let query = {};
+      let query = { show: true };
 
       if (slug && year) {
         const startDate = new Date(`${year}-03-21`);
         const endDate = new Date(`${parseInt(year) + 1}-03-20`);
+
         query.event = slug;
         query.create = {
           $gte: startDate,
@@ -91,10 +92,9 @@ class ContentController {
       } else if (slug) {
         query.event = slug;
       }
-
+      
       const contents = await ContentModel.find(query).sort({ publishTime: -1, create: -1 }).skip(skip).limit(limit);
-
-      if (!contents || contents.length === 0) {
+        if (!contents || contents.length === 0) {
         throw { status: 404, success: false, message: "محتوایی یافت نشد" };
       }
 
@@ -371,6 +371,32 @@ class ContentController {
         success: true,
         result,
       });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  async showContent(req, res, next) {
+    try {
+      const { id } = req.params;
+
+      const content = await ContentModel.findOne({ _id: id });
+      if (!content) {
+        return res.status(404).json({
+          status: 404,
+          success: false,
+          message: "محتوا مورد نظر یافت نشد",
+        });
+      }
+
+      content.show = !content.show;
+      await content.save();
+
+      if (content.show) {
+        return res.status(200).json({ status: 200, sucess: true, message: "با موفقیت قابل نمایش شد" });
+      } else {
+        return res.status(200).json({ status: 200, sucess: true, message: "با موفقیت غیر قابل نمایش شد" });
+      }
     } catch (err) {
       next(err);
     }

@@ -59,3 +59,7 @@ export function contentOfMonth() {
 export function contentuser() {
   return http.get(`/content/contentuser`);
 }
+
+export function changeShowContent(id: string) {
+  return http.put(`/content/show/${id}`);
+}
